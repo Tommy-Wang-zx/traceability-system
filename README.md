@@ -24,6 +24,20 @@
 | PWA | manifest.json |
 | 打包 | HBuilderX (Android APK) |
 
+## 📐 系统设计
+
+### 数据库设计 (ER 图)
+![ER 图](docs/er-diagram.png)
+> 说明：产品与工序通过「工序计划」关联，生产记录独立存储，形成完整追溯链。
+
+### 系统架构
+![架构图](docs/architecture.png)
+> 说明：前端通过 HTTPS 调用云函数，云函数操作数据库。前后端完全分离，支持 PWA 离线安装。
+
+### 核心业务流程
+![流程图](docs/flowchart.png)
+> 说明：从扫码到登记完成的完整用户路径。
+
 ## 📸 功能预览
 
 > （如果你的截图已上传，把 `screenshots/` 替换为实际路径）
