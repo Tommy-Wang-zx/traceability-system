@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>车间追溯系统v0.93</title>
+    <title>车间追溯系统v0.94</title>
 
     <!-- ===== PWA 新增 ===== -->
     <link rel="manifest" href="/manifest.json">
@@ -425,6 +425,10 @@
         }
 
     </style>
+
+    <!-- 预加载 html2canvas（用于导出二维码图片） -->
+    <link rel="preload" as="script" href="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js">
+
 </head>
 <body>
 
@@ -442,7 +446,7 @@
 
     <!-- ===== 登录页面 ===== -->
     <div id="login-page">
-        <div class="logo">🏭 车间追溯 v0.93</div>
+        <div class="logo">🏭 车间追溯 v0.94</div>
         <div class="sub">请选择登录方式</div>
         <button class="login-btn login-btn-test" onclick="loginAsTest()">🧪 测试员工登录</button>
         <button class="login-btn login-btn-wechat" onclick="loginWechat()">💬 企业微信授权（未开放）</button>
@@ -522,7 +526,7 @@
                 🧹 数据管理 <span class="sub">清空测试数据 · 保留工序</span>
             </button>
         </div>
-        <div class="footer">企业微信 · 车间追溯系统 v0.93</div>
+        <div class="footer">企业微信 · 车间追溯系统 v0.94</div>
     </div>
 
     <!-- ===== 员工登记 ===== -->
@@ -776,11 +780,19 @@
         // 十一、向导系统
         // ========================================
 
-        // ========================================
-        // 十二、工具函数
-        // ========================================
 
 
+        // ========================================
+        // 工具函数（放在最前面）
+        // ========================================
+        function showToast(msg, duration = 2000) {
+            const toast = document.getElementById('toast');
+            if (!toast) { alert(msg); return; }
+            toast.textContent = msg;
+            toast.classList.add('show');
+            clearTimeout(toast._timer);
+            toast._timer = setTimeout(() => toast.classList.remove('show'), duration);
+        }
 
 
         // ===== PWA 新增：安装提示 =====
@@ -844,7 +856,7 @@
         const AGENT_ID = '1000002';
         const REDIRECT_URI = encodeURIComponent('https://hajimio-d6g6tsg1e608005d5-1448886989.tcloudbaseapp.com/index.html');
 
-        const ADMIN_LIST = ['测试员工', '张三', '李四', '王五', '赵师傅', '管理员']; //以后可以做成读取云数据库，先用硬代码
+        let adminList = [];  // 新增：管理员列表将从服务器获取
 
         let currentUser = null;
         let selectedProcesses = [];
@@ -878,18 +890,40 @@
         const CACHE_KEY_STATS_INPUT = 'cache_stats_input';
         const CACHE_KEY_USER = 'cache_last_user';
 
-        // ===== Toast =====
-        // ========================================
-        // 十二、工具函数
-        // ========================================
-        function showToast(msg, duration = 2000) {
-            const toast = document.getElementById('toast');
-            if (!toast) { alert(msg); return; }
-            toast.textContent = msg;
-            toast.classList.add('show');
-            clearTimeout(toast._timer);
-            toast._timer = setTimeout(() => toast.classList.remove('show'), duration);
+        
+
+        // ===== 加载管理员列表（从云数据库） =====
+        async function loadAdminList() {
+        try {
+            const url = `${API_BASE}/getAdminList`;  // 注意确保路径正确
+            const response = await fetch(url);
+            const text = await response.text();
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+            const data = JSON.parse(text);
+            if (data.success && Array.isArray(data.admins)) {
+            adminList = data.admins;
+            // 可选：缓存到 localStorage 以备离线使用
+            localStorage.setItem('cached_admin_list', JSON.stringify(adminList));
+            } else {
+            throw new Error(data.msg || '获取管理员列表失败');
+            }
+        } catch (err) {
+            console.error('加载管理员列表失败:', err);
+            // 降级：从 localStorage 读取缓存
+            const cached = localStorage.getItem('cached_admin_list');
+            if (cached) {
+            try {
+                adminList = JSON.parse(cached);
+                console.log('使用缓存的管理员列表');
+            } catch (e) {
+                adminList = [];
+            }
+            } else {
+            adminList = [];
+            }
         }
+        }
+
 
         // ===== 缓存 =====
         function saveCache(key, data) { try { localStorage.setItem(key, JSON.stringify(data)); } catch (e) {} }
@@ -1099,14 +1133,26 @@
 
         function loginWithName(name) {
             saveCache(CACHE_KEY_USER, name);
-            const isAdmin = ADMIN_LIST.includes(name);
-            currentUser = { name, isAdmin };
-            sessionStorage.setItem('currentUser', JSON.stringify(currentUser));
-            document.getElementById('login-page').style.display = 'none';
-            updateUIForUser();
-            showToast(`👋 欢迎，${name}${isAdmin ? '（管理员）' : ''}`, 1500);
-            navigateTo('home');
-            restoreCachedResults();
+            // 不再使用硬编码 ADMIN_LIST，改为调用 loadAdminList()
+            loadAdminList().then(() => {
+                const isAdmin = adminList.includes(name);
+                currentUser = { name, isAdmin };
+                sessionStorage.setItem('currentUser', JSON.stringify(currentUser));
+                document.getElementById('login-page').style.display = 'none';
+                updateUIForUser();
+                showToast(`👋 欢迎，${name}${isAdmin ? '（管理员）' : ''}`, 1500);
+                navigateTo('home');
+                restoreCachedResults();
+            }).catch(() => {
+                // fallback: 如果加载失败，暂时允许以非管理员身份进入
+                currentUser = { name, isAdmin: false };
+                sessionStorage.setItem('currentUser', JSON.stringify(currentUser));
+                document.getElementById('login-page').style.display = 'none';
+                updateUIForUser();
+                showToast(`👋 欢迎，${name}`, 1500);
+                navigateTo('home');
+                restoreCachedResults();
+            });
         }
 
         function logout() {
@@ -1162,24 +1208,28 @@
             document.getElementById('sidebar-name').textContent = name;
             document.getElementById('sidebar-role').textContent = isAdmin ? '管理员' : '普通员工';
             document.getElementById('sidebar-avatar').textContent = name.charAt(0).toUpperCase();
-            const adminBtns = ['home-stats-btn', 'home-defect-btn', 'home-batch-btn', 'home-process-btn', 'home-data-btn',
+            const adminBtns = [
+                'home-stats-btn', 'home-defect-btn', 'home-batch-btn',
+                'home-process-btn', 'home-data-btn',
                 'menu-stats', 'menu-defect', 'menu-batch', 'menu-process', 'menu-data'
             ];
             adminBtns.forEach(id => {
                 const el = document.getElementById(id);
                 if (!el) return;
+                // 使用 currentUser.isAdmin 判断
                 if (isAdmin) {
-                    el.classList.remove('disabled');
-                    el.disabled = false;
-                    if (id.startsWith('menu-')) el.style.display = 'flex';
+                el.classList.remove('disabled');
+                el.disabled = false;
+                if (id.startsWith('menu-')) el.style.display = 'flex';
                 } else {
-                    el.classList.add('disabled');
-                    el.disabled = true;
-                    if (id.startsWith('menu-')) el.style.display = 'none';
-                    if (['page-stats', 'page-defect', 'page-batch', 'page-process', 'page-data'].some(p => document
-                            .getElementById(p).classList.contains('active'))) {
-                        navigateTo('home');
-                    }
+                el.classList.add('disabled');
+                el.disabled = true;
+                if (id.startsWith('menu-')) el.style.display = 'none';
+                // 如果当前页面是管理页面，跳转回主页
+                if (['page-stats', 'page-defect', 'page-batch', 'page-process', 'page-data'].some(p =>
+                    document.getElementById(p).classList.contains('active'))) {
+                    navigateTo('home');
+                }
                 }
             });
         }
@@ -1531,55 +1581,6 @@
             }
         }
 
-        async function batchRegister(materialCode) {
-            if (!batchModeActive || !batchTarget) return false;
-            try {
-                const detail = await fetchProductDetail(materialCode);
-                if (!detail || !detail.product) {
-                    showToast('❌ 未找到该物料码对应的产品', 1500);
-                    return false;
-                }
-                const product = detail.product;
-                if (product.batch_id !== batchTarget.batch_id) {
-                    showToast(`⚠️ 批次不一致！当前是「${product.batch_id}」，目标批次是「${batchTarget.batch_id}」`, 2500);
-                    return false;
-                }
-                const process = detail.processes.find(p => p.process_id === batchTarget.process_id);
-                if (process && process.worker) {
-                    showToast(`⏳ 该工序已被 ${process.worker} 登记过`, 1500);
-                    return false;
-                }
-                const worker = currentUser ? currentUser.name : '未知员工';
-                const record = {
-                    product_id: product._id,
-                    process_id: batchTarget.process_id,
-                    step_order: batchTarget.step_order,
-                    worker: worker,
-                    status: 'completed',
-                    timestamp: new Date().toISOString()
-                };
-                const response = await fetch(`${API_BASE}/submitRecord`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(record)
-                });
-                const text = await response.text();
-                if (!response.ok) throw new Error(text);
-                const result = JSON.parse(text);
-                if (result.success) {
-                    batchCount++;
-                    updateBatchModeUI();
-                    showToast(`✅ 已登记 ${batchCount} 个「${batchTarget.name}」`, 1000);
-                    return true;
-                } else {
-                    throw new Error(result.msg || '登记失败');
-                }
-            } catch (err) {
-                console.error('批量登记异常:', err);
-                showToast('❌ ' + err.message, 2000);
-                return false;
-            }
-        }
 
 
         // ===== 批次管理 =====
@@ -2533,7 +2534,7 @@
             container.innerHTML = html;
 
             // 渲染图表（使用 setTimeout 确保 DOM 已渲染）
-            setTimeout(() => {
+            requestAnimationFrame(() => {
                 // 销毁旧图表
                 Object.keys(chartInstances).forEach(key => {
                     if (chartInstances[key]) {
@@ -2644,7 +2645,7 @@
 
         // ===== 初始化 =====
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('app_v0.93 加载成功（批量导入+统计图表）');
+            console.log('app_v0.94 加载成功（批量导入+统计图表）');
 
             // ===== 返回键回到主界面：初始化历史状态 =====
             window.history.pushState({ page: 'home' }, '', window.location.href);
@@ -2689,6 +2690,14 @@
                 if (e.key === 'Enter') { e.preventDefault();
                     createProcess(); }
             });
+
+            //wizardPrev 定义,放在popstate 监听器之前
+            function wizardPrev() {
+                if (wizardState.currentStep > 0) {
+                    wizardState.currentStep--;
+                    renderWizardContent();
+                }
+            }
 
                 // ===== 返回键回到主界面：拦截返回键 =====
             window.addEventListener('popstate', function(event) {
@@ -2808,13 +2817,6 @@
             } else {
                 closeWizard();
                 showToast('🎉 向导已完成！', 2000);
-            }
-        }
-
-        function wizardPrev() {
-            if (wizardState.currentStep > 0) {
-                wizardState.currentStep--;
-                renderWizardContent();
             }
         }
 
