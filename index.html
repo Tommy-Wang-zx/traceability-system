@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="zh">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>车间追溯系统v0.94</title>
+    <title>车间追溯系统v0.95</title>
 
     <!-- ===== PWA 新增 ===== -->
     <link rel="manifest" href="/manifest.json">
@@ -12,7 +13,12 @@
 
 
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
             background: #f0f2f5;
@@ -21,6 +27,7 @@
             margin: 0 auto;
             min-height: 100vh;
         }
+
         .header {
             background: linear-gradient(135deg, #1890ff, #40a9ff);
             color: white;
@@ -35,22 +42,32 @@
             position: relative;
             min-height: 60px;
         }
+
         .header .hamburger {
             font-size: 24px;
             cursor: pointer;
             padding: 4px 8px;
             border-radius: 6px;
-            background: rgba(255,255,255,0.15);
+            background: rgba(255, 255, 255, 0.15);
             user-select: none;
             line-height: 1;
         }
-        .header .hamburger:active { background: rgba(255,255,255,0.3); }
-        .header .title { flex: 1; text-align: center; font-size: 16px; }
+
+        .header .hamburger:active {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .header .title {
+            flex: 1;
+            text-align: center;
+            font-size: 16px;
+        }
+
         .header .user-badge {
             font-size: 13px;
             font-weight: 400;
             opacity: 0.9;
-            background: rgba(255,255,255,0.2);
+            background: rgba(255, 255, 255, 0.2);
             padding: 4px 12px;
             border-radius: 20px;
             max-width: 80px;
@@ -66,8 +83,8 @@
         /* ===== PWA 新增：安装按钮 ===== */
         #install-btn {
             display: none;
-            background: rgba(255,255,255,0.2);
-            border: 1px solid rgba(255,255,255,0.3);
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
             color: white;
             padding: 4px 10px;
             border-radius: 20px;
@@ -76,8 +93,9 @@
             margin-left: 4px;
             flex-shrink: 0;
         }
+
         #install-btn:active {
-            background: rgba(255,255,255,0.4);
+            background: rgba(255, 255, 255, 0.4);
         }
 
         .btn {
@@ -90,188 +108,859 @@
             transition: all 0.2s;
             width: 100%;
         }
-        .btn:active { transform: scale(0.97); opacity: 0.8; }
-        .btn-primary { background: #1890ff; color: white; }
-        .btn-success { background: #52c41a; color: white; }
-        .btn-warning { background: #faad14; color: white; }
-        .btn-danger { background: #ff4d4f; color: white; }
-        .btn-outline { background: white; color: #1890ff; border: 2px solid #1890ff; }
-        .btn-sm { padding: 6px 14px; font-size: 14px; width: auto; }
-        .btn-add { background: #52c41a; color: white; padding: 8px 16px; font-size: 14px; width: auto; flex-shrink: 0; }
-        .btn-add:active { background: #389e0d; }
-        .btn-del { background: transparent; color: #ff4d4f; border: none; font-size: 18px; cursor: pointer; padding: 0 8px; }
-        .btn-del:active { color: #cf1322; }
-        .btn-scan { background: #722ed1; color: white; flex-shrink: 0; width: auto; padding: 12px 16px; font-size: 16px; }
-        .btn-scan:active { background: #531dab; }
-        .btn-export { background: #13c2c2; color: white; flex-shrink: 0; width: auto; padding: 10px 16px; font-size: 14px; }
-        .btn-export:active { background: #0e9c9c; }
-        .btn-upload { background: #faad14; color: white; padding: 10px 16px; font-size: 14px; width: auto; }
-        .btn-upload:active { background: #d4880f; }
 
-        .card { background: white; border-radius: 12px; padding: 16px 18px; margin: 12px 0; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
-        .card-title { font-size: 17px; font-weight: 600; color: #262626; margin-bottom: 12px; border-bottom: 1px solid #f0f0f0; padding-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
-        .card-title .badge-count { font-size: 13px; font-weight: 400; color: #8c8c8c; }
-        .input-group { display: flex; gap: 10px; margin: 12px 0; align-items: center; }
-        .input-group input { flex: 1; padding: 12px 14px; font-size: 16px; border: 1px solid #d9d9d9; border-radius: 8px; outline: none; }
-        .input-group input:focus { border-color: #1890ff; box-shadow: 0 0 0 2px rgba(24,144,255,0.2); }
-        .input-group .btn { flex-shrink: 0; width: auto; padding: 12px 20px; }
+        .btn:active {
+            transform: scale(0.97);
+            opacity: 0.8;
+        }
+
+        .btn-primary {
+            background: #1890ff;
+            color: white;
+        }
+
+        .btn-success {
+            background: #52c41a;
+            color: white;
+        }
+
+        .btn-warning {
+            background: #faad14;
+            color: white;
+        }
+
+        .btn-danger {
+            background: #ff4d4f;
+            color: white;
+        }
+
+        .btn-outline {
+            background: white;
+            color: #1890ff;
+            border: 2px solid #1890ff;
+        }
+
+        .btn-sm {
+            padding: 6px 14px;
+            font-size: 14px;
+            width: auto;
+        }
+
+        .btn-add {
+            background: #52c41a;
+            color: white;
+            padding: 8px 16px;
+            font-size: 14px;
+            width: auto;
+            flex-shrink: 0;
+        }
+
+        .btn-add:active {
+            background: #389e0d;
+        }
+
+        .btn-del {
+            background: transparent;
+            color: #ff4d4f;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+            padding: 0 8px;
+        }
+
+        .btn-del:active {
+            color: #cf1322;
+        }
+
+        .btn-scan {
+            background: #722ed1;
+            color: white;
+            flex-shrink: 0;
+            width: auto;
+            padding: 12px 16px;
+            font-size: 16px;
+        }
+
+        .btn-scan:active {
+            background: #531dab;
+        }
+
+        .btn-export {
+            background: #13c2c2;
+            color: white;
+            flex-shrink: 0;
+            width: auto;
+            padding: 10px 16px;
+            font-size: 14px;
+        }
+
+        .btn-export:active {
+            background: #0e9c9c;
+        }
+
+        .btn-upload {
+            background: #faad14;
+            color: white;
+            padding: 10px 16px;
+            font-size: 14px;
+            width: auto;
+        }
+
+        .btn-upload:active {
+            background: #d4880f;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 16px 18px;
+            margin: 12px 0;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+        }
+
+        .card-title {
+            font-size: 17px;
+            font-weight: 600;
+            color: #262626;
+            margin-bottom: 12px;
+            border-bottom: 1px solid #f0f0f0;
+            padding-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-title .badge-count {
+            font-size: 13px;
+            font-weight: 400;
+            color: #8c8c8c;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin: 12px 0;
+            align-items: center;
+        }
+
+        .input-group input {
+            flex: 1;
+            padding: 12px 14px;
+            font-size: 16px;
+            border: 1px solid #d9d9d9;
+            border-radius: 8px;
+            outline: none;
+        }
+
+        .input-group input:focus {
+            border-color: #1890ff;
+            box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+        }
+
+        .input-group .btn {
+            flex-shrink: 0;
+            width: auto;
+            padding: 12px 20px;
+        }
 
         .toast {
-            position: fixed; top: 30%; left: 50%; transform: translate(-50%, -50%);
-            background: rgba(0,0,0,0.75); color: white; padding: 14px 28px;
-            border-radius: 8px; font-size: 16px; z-index: 99999; max-width: 80%;
-            text-align: center; display: none;
+            position: fixed;
+            top: 30%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.75);
+            color: white;
+            padding: 14px 28px;
+            border-radius: 8px;
+            font-size: 16px;
+            z-index: 99999;
+            max-width: 80%;
+            text-align: center;
+            display: none;
         }
-        .toast.show { display: block; animation: fadeIn 0.3s; }
-        @keyframes fadeIn { from { opacity: 0; transform: translate(-50%, -40%); } to { opacity: 1; transform: translate(-50%, -50%); } }
-        .hidden { display: none !important; }
-        .page { display: none; }
-        .page.active { display: block; }
+
+        .toast.show {
+            display: block;
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -40%);
+            }
+
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%);
+            }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
 
         /* 扫码遮罩 */
         #scanner-overlay {
-            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.9); z-index: 99998; display: none;
-            flex-direction: column; align-items: center; justify-content: center; padding: 20px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 99998;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
         }
-        #scanner-overlay.active { display: flex; }
-        #scanner-overlay .scanner-box { width: 100%; max-width: 400px; position: relative; background: #000; border-radius: 16px; overflow: hidden; }
-        #scanner-overlay .scanner-box #scanner-video { width: 100%; aspect-ratio: 1/1; display: block; }
-        #scanner-overlay .scanner-close { position: absolute; top: 20px; right: 20px; background: rgba(255,255,255,0.2); border: none; color: white; font-size: 28px; padding: 8px 16px; border-radius: 50%; cursor: pointer; z-index: 10; }
-        #scanner-overlay .scanner-close:active { background: rgba(255,255,255,0.4); }
-        #scanner-overlay .scanner-tip { color: white; margin-top: 16px; font-size: 16px; text-align: center; }
-        #scanner-overlay .scanner-status { color: #faad14; margin-top: 8px; font-size: 14px; text-align: center; }
+
+        #scanner-overlay.active {
+            display: flex;
+        }
+
+        #scanner-overlay .scanner-box {
+            width: 100%;
+            max-width: 400px;
+            position: relative;
+            background: #000;
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        #scanner-overlay .scanner-box #scanner-video {
+            width: 100%;
+            aspect-ratio: 1/1;
+            display: block;
+        }
+
+        #scanner-overlay .scanner-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            font-size: 28px;
+            padding: 8px 16px;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        #scanner-overlay .scanner-close:active {
+            background: rgba(255, 255, 255, 0.4);
+        }
+
+        #scanner-overlay .scanner-tip {
+            color: white;
+            margin-top: 16px;
+            font-size: 16px;
+            text-align: center;
+        }
+
+        #scanner-overlay .scanner-status {
+            color: #faad14;
+            margin-top: 8px;
+            font-size: 14px;
+            text-align: center;
+        }
 
         /* 侧边栏 */
-        #sidebar-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.4); z-index: 9998; display: none; }
-        #sidebar-overlay.active { display: block; }
-        #sidebar {
-            position: fixed; top: 0; left: -280px; width: 280px; bottom: 0;
-            background: white; z-index: 9999; transition: left 0.3s ease;
-            box-shadow: 2px 0 12px rgba(0,0,0,0.15); padding: 20px 0; overflow-y: auto;
+        #sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 9998;
+            display: none;
         }
-        #sidebar.active { left: 0; }
-        #sidebar .sidebar-header { padding: 0 20px 20px; border-bottom: 1px solid #f0f0f0; display: flex; align-items: center; gap: 12px; }
-        #sidebar .sidebar-header .avatar { width: 48px; height: 48px; border-radius: 50%; background: #1890ff; color: white; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 600; }
-        #sidebar .sidebar-header .info .name { font-weight: 600; font-size: 16px; }
-        #sidebar .sidebar-header .info .role { font-size: 13px; color: #8c8c8c; }
-        #sidebar .menu-item {
-            padding: 14px 24px; font-size: 16px; color: #333; cursor: pointer;
-            display: flex; align-items: center; gap: 12px;
-            border-left: 3px solid transparent; transition: all 0.2s;
-        }
-        #sidebar .menu-item:active { background: #f5f5f5; }
-        #sidebar .menu-item.active { background: #e6f7ff; border-left-color: #1890ff; color: #1890ff; }
-        #sidebar .menu-item .icon { font-size: 20px; width: 28px; text-align: center; }
-        #sidebar .menu-divider { height: 1px; background: #f0f0f0; margin: 8px 16px; }
 
-        .home-menu { display: flex; flex-direction: column; gap: 16px; margin-top: 20px; }
-        .home-menu .menu-btn {
-            padding: 30px 20px; font-size: 22px; font-weight: 600;
-            border-radius: 16px; border: none; cursor: pointer; transition: all 0.2s;
-            text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        #sidebar-overlay.active {
+            display: block;
         }
-        .home-menu .menu-btn:active { transform: scale(0.97); }
-        .home-menu .menu-btn .sub { display: block; font-size: 14px; font-weight: 400; margin-top: 6px; opacity: 0.8; }
-        .menu-btn-register { background: linear-gradient(135deg, #1890ff, #40a9ff); color: white; }
-        .menu-btn-stats { background: linear-gradient(135deg, #52c41a, #73d13d); color: white; }
-        .menu-btn-defect { background: linear-gradient(135deg, #faad14, #ff7875); color: white; }
-        .menu-btn-batch { background: linear-gradient(135deg, #722ed1, #b37feb); color: white; }
-        .menu-btn-process { background: linear-gradient(135deg, #13c2c2, #36cfc9); color: white; }
-        .menu-btn-data { background: linear-gradient(135deg, #fa541c, #ff7875); color: white; }
-        .menu-btn.disabled { background: #d9d9d9; color: #999; cursor: not-allowed; }
+
+        #sidebar {
+            position: fixed;
+            top: 0;
+            left: -280px;
+            width: 280px;
+            bottom: 0;
+            background: white;
+            z-index: 9999;
+            transition: left 0.3s ease;
+            box-shadow: 2px 0 12px rgba(0, 0, 0, 0.15);
+            padding: 20px 0;
+            overflow-y: auto;
+        }
+
+        #sidebar.active {
+            left: 0;
+        }
+
+        #sidebar .sidebar-header {
+            padding: 0 20px 20px;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        #sidebar .sidebar-header .avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: #1890ff;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        #sidebar .sidebar-header .info .name {
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        #sidebar .sidebar-header .info .role {
+            font-size: 13px;
+            color: #8c8c8c;
+        }
+
+        #sidebar .menu-item {
+            padding: 14px 24px;
+            font-size: 16px;
+            color: #333;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-left: 3px solid transparent;
+            transition: all 0.2s;
+        }
+
+        #sidebar .menu-item:active {
+            background: #f5f5f5;
+        }
+
+        #sidebar .menu-item.active {
+            background: #e6f7ff;
+            border-left-color: #1890ff;
+            color: #1890ff;
+        }
+
+        #sidebar .menu-item .icon {
+            font-size: 20px;
+            width: 28px;
+            text-align: center;
+        }
+
+        #sidebar .menu-divider {
+            height: 1px;
+            background: #f0f0f0;
+            margin: 8px 16px;
+        }
+
+        .home-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-top: 20px;
+        }
+
+        .home-menu .menu-btn {
+            padding: 30px 20px;
+            font-size: 22px;
+            font-weight: 600;
+            border-radius: 16px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .home-menu .menu-btn:active {
+            transform: scale(0.97);
+        }
+
+        .home-menu .menu-btn .sub {
+            display: block;
+            font-size: 14px;
+            font-weight: 400;
+            margin-top: 6px;
+            opacity: 0.8;
+        }
+
+        .menu-btn-register {
+            background: linear-gradient(135deg, #1890ff, #40a9ff);
+            color: white;
+        }
+
+        .menu-btn-stats {
+            background: linear-gradient(135deg, #52c41a, #73d13d);
+            color: white;
+        }
+
+        .menu-btn-defect {
+            background: linear-gradient(135deg, #faad14, #ff7875);
+            color: white;
+        }
+
+        .menu-btn-batch {
+            background: linear-gradient(135deg, #722ed1, #b37feb);
+            color: white;
+        }
+
+        .menu-btn-process {
+            background: linear-gradient(135deg, #13c2c2, #36cfc9);
+            color: white;
+        }
+
+        .menu-btn-data {
+            background: linear-gradient(135deg, #fa541c, #ff7875);
+            color: white;
+        }
+
+        .menu-btn.disabled {
+            background: #d9d9d9;
+            color: #999;
+            cursor: not-allowed;
+        }
 
         .process-item {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 10px 0; border-bottom: 1px solid #f5f5f5; font-size: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #f5f5f5;
+            font-size: 15px;
             flex-wrap: wrap;
             gap: 6px;
         }
-        .process-item:last-child { border-bottom: none; }
-        .process-step { color: #8c8c8c; margin-right: 10px; }
-        .process-name { color: #262626; font-weight: 500; }
-        .process-status { font-size: 13px; padding: 2px 10px; border-radius: 12px; background: #f0f0f0; color: #8c8c8c; }
-        .process-status.done { background: #f6ffed; color: #52c41a; }
-        .process-status.pending { background: #fff7e6; color: #faad14; }
-        .process-status.failed { background: #fff1f0; color: #ff4d4f; }
-        .process-worker { font-size: 13px; color: #8c8c8c; }
-        .badge { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 13px; background: #e6f7ff; color: #1890ff; }
-        .badge.done { background: #f6ffed; color: #52c41a; }
-        .badge.pending { background: #fff7e6; color: #faad14; }
-        .badge.processing { background: #e6f7ff; color: #1890ff; }
-        .empty-tip { color: #bfbfbf; text-align: center; padding: 20px 0; font-size: 15px; }
-        .footer { margin-top: 30px; text-align: center; color: #bfbfbf; font-size: 12px; }
-        .rate-high { color: #52c41a; font-weight: 600; }
-        .rate-low { color: #ff4d4f; font-weight: 600; }
+
+        .process-item:last-child {
+            border-bottom: none;
+        }
+
+        .process-step {
+            color: #8c8c8c;
+            margin-right: 10px;
+        }
+
+        .process-name {
+            color: #262626;
+            font-weight: 500;
+        }
+
+        .process-status {
+            font-size: 13px;
+            padding: 2px 10px;
+            border-radius: 12px;
+            background: #f0f0f0;
+            color: #8c8c8c;
+        }
+
+        .process-status.done {
+            background: #f6ffed;
+            color: #52c41a;
+        }
+
+        .process-status.pending {
+            background: #fff7e6;
+            color: #faad14;
+        }
+
+        .process-status.failed {
+            background: #fff1f0;
+            color: #ff4d4f;
+        }
+
+        .process-worker {
+            font-size: 13px;
+            color: #8c8c8c;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 13px;
+            background: #e6f7ff;
+            color: #1890ff;
+        }
+
+        .badge.done {
+            background: #f6ffed;
+            color: #52c41a;
+        }
+
+        .badge.pending {
+            background: #fff7e6;
+            color: #faad14;
+        }
+
+        .badge.processing {
+            background: #e6f7ff;
+            color: #1890ff;
+        }
+
+        .empty-tip {
+            color: #bfbfbf;
+            text-align: center;
+            padding: 20px 0;
+            font-size: 15px;
+        }
+
+        .footer {
+            margin-top: 30px;
+            text-align: center;
+            color: #bfbfbf;
+            font-size: 12px;
+        }
+
+        .rate-high {
+            color: #52c41a;
+            font-weight: 600;
+        }
+
+        .rate-low {
+            color: #ff4d4f;
+            font-weight: 600;
+        }
 
         /* 登录页 */
         #login-page {
-            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-            background: white; z-index: 99999; display: flex; flex-direction: column;
-            align-items: center; justify-content: center; padding: 30px; max-width: 480px; margin: 0 auto;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: white;
+            z-index: 99999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+            max-width: 480px;
+            margin: 0 auto;
         }
-        #login-page .logo { font-size: 32px; font-weight: 700; color: #1890ff; margin-bottom: 10px; }
-        #login-page .sub { color: #8c8c8c; font-size: 14px; margin-bottom: 40px; }
-        .login-btn { width: 100%; padding: 14px; font-size: 18px; border: none; border-radius: 8px; cursor: pointer; margin-bottom: 12px; transition: all 0.2s; }
-        .login-btn:active { transform: scale(0.97); }
-        .login-btn-test { background: #1890ff; color: white; }
-        .login-btn-wechat { background: #07c160; color: white; }
-        .login-btn-name { background: #f5f5f5; color: #333; border: 1px solid #d9d9d9; }
-        #login-page .name-input-group { display: flex; gap: 10px; width: 100%; margin-top: 8px; }
-        #login-page .name-input-group input { flex: 1; padding: 12px; font-size: 16px; border: 1px solid #d9d9d9; border-radius: 8px; outline: none; }
-        #login-page .name-input-group input:focus { border-color: #1890ff; box-shadow: 0 0 0 2px rgba(24,144,255,0.2); }
-        #login-page .name-input-group button { padding: 12px 20px; background: #1890ff; color: white; border: none; border-radius: 8px; font-size: 16px; cursor: pointer; }
-        .stats-tab-group { display: flex; gap: 10px; margin-top: 10px; }
-        .stats-tab-group .btn { flex: 1; }
-        .stats-tab-group .btn-chart { background: #722ed1; color: white; border: none; }
-        .stats-tab-group .btn-chart:active { background: #531dab; }
-        .stats-tab-group .btn-chart.active { background: #531dab; }
+
+        #login-page .logo {
+            font-size: 32px;
+            font-weight: 700;
+            color: #1890ff;
+            margin-bottom: 10px;
+        }
+
+        #login-page .sub {
+            color: #8c8c8c;
+            font-size: 14px;
+            margin-bottom: 40px;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 14px;
+            font-size: 18px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-bottom: 12px;
+            transition: all 0.2s;
+        }
+
+        .login-btn:active {
+            transform: scale(0.97);
+        }
+
+        .login-btn-test {
+            background: #1890ff;
+            color: white;
+        }
+
+        .login-btn-wechat {
+            background: #07c160;
+            color: white;
+        }
+
+        .login-btn-name {
+            background: #f5f5f5;
+            color: #333;
+            border: 1px solid #d9d9d9;
+        }
+
+        #login-page .name-input-group {
+            display: flex;
+            gap: 10px;
+            width: 100%;
+            margin-top: 8px;
+        }
+
+        #login-page .name-input-group input {
+            flex: 1;
+            padding: 12px;
+            font-size: 16px;
+            border: 1px solid #d9d9d9;
+            border-radius: 8px;
+            outline: none;
+        }
+
+        #login-page .name-input-group input:focus {
+            border-color: #1890ff;
+            box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+        }
+
+        #login-page .name-input-group button {
+            padding: 12px 20px;
+            background: #1890ff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .stats-tab-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .stats-tab-group .btn {
+            flex: 1;
+        }
+
+        .stats-tab-group .btn-chart {
+            background: #722ed1;
+            color: white;
+            border: none;
+        }
+
+        .stats-tab-group .btn-chart:active {
+            background: #531dab;
+        }
+
+        .stats-tab-group .btn-chart.active {
+            background: #531dab;
+        }
 
         /* 批次管理 - 工序选择器 */
-        .process-selector { border: 1px solid #e8e8e8; border-radius: 8px; padding: 12px; margin: 8px 0; background: #fafafa; }
-        .process-selector .add-row { display: flex; gap: 8px; align-items: center; margin-top: 8px; }
-        .process-selector .add-row select { flex: 1; padding: 10px 12px; font-size: 16px; border: 1px solid #d9d9d9; border-radius: 8px; outline: none; background: white; }
-        .process-selector .add-row select:focus { border-color: #1890ff; }
-        .process-selector .selected-list { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 8px; }
-        .process-selector .selected-tag {
-            display: inline-flex; align-items: center; gap: 6px;
-            background: #e6f7ff; border: 1px solid #91d5ff; border-radius: 16px;
-            padding: 4px 10px 4px 14px; font-size: 14px; color: #1890ff;
+        .process-selector {
+            border: 1px solid #e8e8e8;
+            border-radius: 8px;
+            padding: 12px;
+            margin: 8px 0;
+            background: #fafafa;
         }
-        .process-selector .selected-tag .del { cursor: pointer; font-size: 16px; color: #999; line-height: 1; }
-        .process-selector .selected-tag .del:hover { color: #ff4d4f; }
-        .process-selector .empty-hint { color: #bfbfbf; font-size: 14px; padding: 4px 0; }
 
-        .preview-table { width: 100%; font-size: 13px; border-collapse: collapse; margin-top: 10px; }
-        .preview-table th { background: #f5f5f5; padding: 8px 6px; text-align: left; }
-        .preview-table td { padding: 6px; border-bottom: 1px solid #f0f0f0; font-family: monospace; }
-        .preview-summary { background: #f6ffed; padding: 12px; border-radius: 8px; margin-top: 10px; border-left: 3px solid #52c41a; }
-        .preview-summary .highlight { font-weight: 700; color: #1890ff; }
+        .process-selector .add-row {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            margin-top: 8px;
+        }
+
+        .process-selector .add-row select {
+            flex: 1;
+            padding: 10px 12px;
+            font-size: 16px;
+            border: 1px solid #d9d9d9;
+            border-radius: 8px;
+            outline: none;
+            background: white;
+        }
+
+        .process-selector .add-row select:focus {
+            border-color: #1890ff;
+        }
+
+        .process-selector .selected-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .process-selector .selected-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #e6f7ff;
+            border: 1px solid #91d5ff;
+            border-radius: 16px;
+            padding: 4px 10px 4px 14px;
+            font-size: 14px;
+            color: #1890ff;
+        }
+
+        .process-selector .selected-tag .del {
+            cursor: pointer;
+            font-size: 16px;
+            color: #999;
+            line-height: 1;
+        }
+
+        .process-selector .selected-tag .del:hover {
+            color: #ff4d4f;
+        }
+
+        .process-selector .empty-hint {
+            color: #bfbfbf;
+            font-size: 14px;
+            padding: 4px 0;
+        }
+
+        .preview-table {
+            width: 100%;
+            font-size: 13px;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        .preview-table th {
+            background: #f5f5f5;
+            padding: 8px 6px;
+            text-align: left;
+        }
+
+        .preview-table td {
+            padding: 6px;
+            border-bottom: 1px solid #f0f0f0;
+            font-family: monospace;
+        }
+
+        .preview-summary {
+            background: #f6ffed;
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 10px;
+            border-left: 3px solid #52c41a;
+        }
+
+        .preview-summary .highlight {
+            font-weight: 700;
+            color: #1890ff;
+        }
 
         /* 数据管理 */
-        .data-clean-btn-group { display: flex; flex-direction: column; gap: 10px; margin-top: 12px; }
-        .data-clean-btn-group .btn { font-size: 16px; padding: 12px; }
-        .data-warning { background: #fff7e6; padding: 12px; border-radius: 8px; border-left: 3px solid #faad14; font-size: 14px; color: #8c8c8c; margin-bottom: 12px; }
-        .data-warning strong { color: #ff4d4f; }
+        .data-clean-btn-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+        .data-clean-btn-group .btn {
+            font-size: 16px;
+            padding: 12px;
+        }
+
+        .data-warning {
+            background: #fff7e6;
+            padding: 12px;
+            border-radius: 8px;
+            border-left: 3px solid #faad14;
+            font-size: 14px;
+            color: #8c8c8c;
+            margin-bottom: 12px;
+        }
+
+        .data-warning strong {
+            color: #ff4d4f;
+        }
 
         /* 工序管理 */
         .process-list-item {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 10px 12px; border-bottom: 1px solid #f5f5f5;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 12px;
+            border-bottom: 1px solid #f5f5f5;
             font-size: 15px;
             transition: background 0.2s;
         }
-        .process-list-item:last-child { border-bottom: none; }
-        .process-list-item .name { font-weight: 500; color: #262626; flex: 1; }
-        .process-list-item .actions { display: flex; gap: 8px; flex-shrink: 0; }
-        .process-list-item .actions .btn-sm { padding: 4px 12px; font-size: 13px; width: auto; }
-        .process-list-item .actions .btn-edit { background: #1890ff; color: white; border: none; border-radius: 4px; cursor: pointer; }
-        .process-list-item .actions .btn-edit:active { background: #096dd9; }
-        .process-list-item .actions .btn-delete { background: #ff4d4f; color: white; border: none; border-radius: 4px; cursor: pointer; }
-        .process-list-item .actions .btn-delete:active { background: #cf1322; }
-        .process-list-item .id-tag { font-size: 12px; color: #bfbfbf; margin-right: 12px; font-family: monospace; }
-        .process-edit-input { flex: 1; padding: 6px 10px; font-size: 15px; border: 1px solid #d9d9d9; border-radius: 4px; outline: none; }
-        .process-edit-input:focus { border-color: #1890ff; box-shadow: 0 0 0 2px rgba(24,144,255,0.2); }
+
+        .process-list-item:last-child {
+            border-bottom: none;
+        }
+
+        .process-list-item .name {
+            font-weight: 500;
+            color: #262626;
+            flex: 1;
+        }
+
+        .process-list-item .actions {
+            display: flex;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+
+        .process-list-item .actions .btn-sm {
+            padding: 4px 12px;
+            font-size: 13px;
+            width: auto;
+        }
+
+        .process-list-item .actions .btn-edit {
+            background: #1890ff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .process-list-item .actions .btn-edit:active {
+            background: #096dd9;
+        }
+
+        .process-list-item .actions .btn-delete {
+            background: #ff4d4f;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .process-list-item .actions .btn-delete:active {
+            background: #cf1322;
+        }
+
+        .process-list-item .id-tag {
+            font-size: 12px;
+            color: #bfbfbf;
+            margin-right: 12px;
+            font-family: monospace;
+        }
+
+        .process-edit-input {
+            flex: 1;
+            padding: 6px 10px;
+            font-size: 15px;
+            border: 1px solid #d9d9d9;
+            border-radius: 4px;
+            outline: none;
+        }
+
+        .process-edit-input:focus {
+            border-color: #1890ff;
+            box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+        }
 
         /* 图表容器 */
         .chart-container {
@@ -280,10 +969,31 @@
             margin: 8px 0;
             max-width: 100%;
         }
-        .chart-container canvas { width: 100% !important; height: 100% !important; }
-        .chart-box { background: #fafafa; border-radius: 8px; padding: 12px; margin: 8px 0; }
-        .chart-box .chart-title { font-size: 14px; font-weight: 600; color: #333; margin-bottom: 8px; }
-        .chart-box .chart-sub { font-size: 12px; color: #8c8c8c; margin-bottom: 4px; }
+
+        .chart-container canvas {
+            width: 100% !important;
+            height: 100% !important;
+        }
+
+        .chart-box {
+            background: #fafafa;
+            border-radius: 8px;
+            padding: 12px;
+            margin: 8px 0;
+        }
+
+        .chart-box .chart-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .chart-box .chart-sub {
+            font-size: 12px;
+            color: #8c8c8c;
+            margin-bottom: 4px;
+        }
 
         /* 批量导入 */
         .import-area {
@@ -295,11 +1005,30 @@
             transition: all 0.2s;
             cursor: pointer;
         }
-        .import-area:hover { border-color: #1890ff; background: #f6f9ff; }
-        .import-area .icon { font-size: 32px; display: block; margin-bottom: 8px; }
-        .import-area .hint { font-size: 14px; }
-        .import-area input[type="file"] { display: none; }
-        .import-preview { margin-top: 12px; }
+
+        .import-area:hover {
+            border-color: #1890ff;
+            background: #f6f9ff;
+        }
+
+        .import-area .icon {
+            font-size: 32px;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .import-area .hint {
+            font-size: 14px;
+        }
+
+        .import-area input[type="file"] {
+            display: none;
+        }
+
+        .import-preview {
+            margin-top: 12px;
+        }
+
         .import-preview .batch-item {
             background: #fafafa;
             border-radius: 8px;
@@ -307,12 +1036,36 @@
             margin-bottom: 8px;
             border-left: 3px solid #1890ff;
         }
-        .import-preview .batch-item .meta { display: flex; flex-wrap: wrap; gap: 4px 12px; font-size: 14px; }
-        .import-preview .batch-item .meta .label { color: #8c8c8c; }
-        .import-preview .batch-item .meta .value { font-weight: 500; }
-        .import-preview .batch-item .status-ok { color: #52c41a; }
-        .import-preview .batch-item .status-err { color: #ff4d4f; }
-        .import-preview .examples { font-size: 12px; color: #8c8c8c; margin-top: 4px; font-family: monospace; }
+
+        .import-preview .batch-item .meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px 12px;
+            font-size: 14px;
+        }
+
+        .import-preview .batch-item .meta .label {
+            color: #8c8c8c;
+        }
+
+        .import-preview .batch-item .meta .value {
+            font-weight: 500;
+        }
+
+        .import-preview .batch-item .status-ok {
+            color: #52c41a;
+        }
+
+        .import-preview .batch-item .status-err {
+            color: #ff4d4f;
+        }
+
+        .import-preview .examples {
+            font-size: 12px;
+            color: #8c8c8c;
+            margin-top: 4px;
+            font-family: monospace;
+        }
 
         /* ===== 二维码标签 ===== */
         .qr-tag {
@@ -326,10 +1079,12 @@
             width: 100px;
             flex-shrink: 0;
         }
+
         .qr-tag canvas {
             width: 80px !important;
             height: 80px !important;
         }
+
         .qr-tag .qr-label {
             font-size: 10px;
             color: #333;
@@ -341,6 +1096,7 @@
             overflow: hidden;
             text-overflow: ellipsis;
         }
+
         /* ===== 批量模式状态栏 ===== */
         #batch-mode-bar {
             position: fixed;
@@ -352,18 +1108,24 @@
             padding: 12px 24px;
             border-radius: 12px;
             z-index: 999;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
             max-width: 90%;
             text-align: center;
             font-size: 15px;
         }
-        #batch-mode-bar.hidden { display: none; }
+
+        #batch-mode-bar.hidden {
+            display: none;
+        }
 
         /* ===== 向导 ===== */
         #wizard-overlay {
             position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.6);
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
             z-index: 99999;
             display: none;
             flex-direction: column;
@@ -371,7 +1133,11 @@
             justify-content: center;
             padding: 20px;
         }
-        #wizard-overlay.active { display: flex; }
+
+        #wizard-overlay.active {
+            display: flex;
+        }
+
         #wizard-panel {
             background: white;
             border-radius: 16px;
@@ -383,26 +1149,57 @@
             position: relative;
             animation: slideUp 0.3s ease;
         }
+
         @keyframes slideUp {
-            from { transform: translateY(30px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
+            from {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
         }
+
         #wizard-panel .step-indicators {
             display: flex;
             gap: 8px;
             justify-content: center;
             margin-bottom: 16px;
         }
+
         #wizard-panel .step-dot {
-            width: 8px; height: 8px;
+            width: 8px;
+            height: 8px;
             border-radius: 50%;
             background: #d9d9d9;
             transition: all 0.3s;
         }
-        #wizard-panel .step-dot.active { background: #1890ff; width: 24px; border-radius: 4px; }
-        #wizard-panel .step-dot.done { background: #52c41a; }
-        #wizard-panel .step-title { font-size: 18px; font-weight: 600; color: #262626; margin-bottom: 8px; }
-        #wizard-panel .step-desc { font-size: 14px; color: #8c8c8c; margin-bottom: 16px; }
+
+        #wizard-panel .step-dot.active {
+            background: #1890ff;
+            width: 24px;
+            border-radius: 4px;
+        }
+
+        #wizard-panel .step-dot.done {
+            background: #52c41a;
+        }
+
+        #wizard-panel .step-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #262626;
+            margin-bottom: 8px;
+        }
+
+        #wizard-panel .step-desc {
+            font-size: 14px;
+            color: #8c8c8c;
+            margin-bottom: 16px;
+        }
+
         #wizard-panel .step-action {
             background: #f6f9ff;
             border-radius: 8px;
@@ -410,9 +1207,22 @@
             margin-bottom: 16px;
             border-left: 3px solid #1890ff;
         }
-        #wizard-panel .step-action .highlight { font-weight: 600; color: #1890ff; }
-        #wizard-panel .btn-group { display: flex; gap: 10px; margin-top: 12px; }
-        #wizard-panel .btn-group .btn { flex: 1; }
+
+        #wizard-panel .step-action .highlight {
+            font-weight: 600;
+            color: #1890ff;
+        }
+
+        #wizard-panel .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+        #wizard-panel .btn-group .btn {
+            flex: 1;
+        }
+
         #wizard-panel .btn-wizard-skip {
             background: transparent;
             color: #8c8c8c;
@@ -423,13 +1233,13 @@
             width: 100%;
             cursor: pointer;
         }
-
     </style>
 
     <!-- 预加载 html2canvas（用于导出二维码图片） -->
     <link rel="preload" as="script" href="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js">
 
 </head>
+
 <body>
 
     <div id="toast" class="toast"></div>
@@ -446,7 +1256,7 @@
 
     <!-- ===== 登录页面 ===== -->
     <div id="login-page">
-        <div class="logo">🏭 车间追溯 v0.94</div>
+        <div class="logo">🏭 车间追溯 v0.95</div>
         <div class="sub">请选择登录方式</div>
         <button class="login-btn login-btn-test" onclick="loginAsTest()">🧪 测试员工登录</button>
         <button class="login-btn login-btn-wechat" onclick="loginWechat()">💬 企业微信授权（未开放）</button>
@@ -467,13 +1277,20 @@
                 <div class="role" id="sidebar-role">普通员工</div>
             </div>
         </div>
-        <div class="menu-item active" data-page="home" onclick="navigateTo('home')"><span class="icon">🏠</span> 返回主页</div>
-        <div class="menu-item" data-page="register" onclick="navigateTo('register')"><span class="icon">🛠️</span> 员工登记</div>
-        <div class="menu-item" data-page="stats" id="menu-stats" onclick="navigateTo('stats')"><span class="icon">📊</span> 查询统计 <span class="badge">管理</span></div>
-        <div class="menu-item" data-page="defect" id="menu-defect" onclick="navigateTo('defect')"><span class="icon">⚠️</span> 不合格标记 <span class="badge">管理</span></div>
-        <div class="menu-item" data-page="batch" id="menu-batch" onclick="navigateTo('batch')"><span class="icon">📦</span> 批次管理 <span class="badge">管理</span></div>
-        <div class="menu-item" data-page="process" id="menu-process" onclick="navigateTo('process')"><span class="icon">⚙️</span> 工序管理 <span class="badge">管理</span></div>
-        <div class="menu-item" data-page="data" id="menu-data" onclick="navigateTo('data')"><span class="icon">🧹</span> 数据管理 <span class="badge">管理</span></div>
+        <div class="menu-item active" data-page="home" onclick="navigateTo('home')"><span class="icon">🏠</span> 返回主页
+        </div>
+        <div class="menu-item" data-page="register" onclick="navigateTo('register')"><span class="icon">🛠️</span> 员工登记
+        </div>
+        <div class="menu-item" data-page="stats" id="menu-stats" onclick="navigateTo('stats')"><span
+                class="icon">📊</span> 查询统计 <span class="badge">管理</span></div>
+        <div class="menu-item" data-page="defect" id="menu-defect" onclick="navigateTo('defect')"><span
+                class="icon">⚠️</span> 不合格标记 <span class="badge">管理</span></div>
+        <div class="menu-item" data-page="batch" id="menu-batch" onclick="navigateTo('batch')"><span
+                class="icon">📦</span> 批次管理 <span class="badge">管理</span></div>
+        <div class="menu-item" data-page="process" id="menu-process" onclick="navigateTo('process')"><span
+                class="icon">⚙️</span> 工序管理 <span class="badge">管理</span></div>
+        <div class="menu-item" data-page="data" id="menu-data" onclick="navigateTo('data')"><span class="icon">🧹</span>
+            数据管理 <span class="badge">管理</span></div>
         <div class="menu-divider"></div>
         <div class="menu-item" onclick="logout()"><span class="icon">🚪</span> 退出登录</div>
     </div>
@@ -488,7 +1305,9 @@
         </div>
 
         <!-- ===== 傻瓜式向导入口 ===== -->
-        <div class="card" style="background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:white;border:none;cursor:pointer;" onclick="openWizard()">
+        <div class="card"
+            style="background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:white;border:none;cursor:pointer;"
+            onclick="openWizard()">
             <div style="display:flex;align-items:center;justify-content:space-between;">
                 <div>
                     <div style="font-size:20px;font-weight:600;">📋 开始向导</div>
@@ -500,13 +1319,17 @@
 
         <div class="home-menu">
             <!-- ===== 员工专区 ===== -->
-            <div style="font-size:12px;color:#bfbfbf;margin-top:4px;padding-left:4px;border-bottom:1px solid #f0f0f0;padding-bottom:6px;">🧑‍🏭 员工专区</div>
+            <div
+                style="font-size:12px;color:#bfbfbf;margin-top:4px;padding-left:4px;border-bottom:1px solid #f0f0f0;padding-bottom:6px;">
+                🧑‍🏭 员工专区</div>
             <button class="menu-btn menu-btn-register" onclick="navigateTo('register')">
                 🛠️ 员工登记 <span class="sub">扫码 / 输入物料码 · 登记工序</span>
             </button>
 
             <!-- ===== 管理专区 ===== -->
-            <div style="font-size:12px;color:#bfbfbf;margin-top:12px;padding-left:4px;border-bottom:1px solid #f0f0f0;padding-bottom:6px;">📊 管理专区</div>
+            <div
+                style="font-size:12px;color:#bfbfbf;margin-top:12px;padding-left:4px;border-bottom:1px solid #f0f0f0;padding-bottom:6px;">
+                📊 管理专区</div>
             <button class="menu-btn menu-btn-stats" id="home-stats-btn" onclick="navigateTo('stats')">
                 📊 查询统计 <span class="sub">员工完成量 · 产品完成度 · 图表</span>
             </button>
@@ -518,7 +1341,9 @@
             </button>
 
             <!-- ===== 系统专区 ===== -->
-            <div style="font-size:12px;color:#bfbfbf;margin-top:12px;padding-left:4px;border-bottom:1px solid #f0f0f0;padding-bottom:6px;">⚙️ 系统专区</div>
+            <div
+                style="font-size:12px;color:#bfbfbf;margin-top:12px;padding-left:4px;border-bottom:1px solid #f0f0f0;padding-bottom:6px;">
+                ⚙️ 系统专区</div>
             <button class="menu-btn menu-btn-process" id="home-process-btn" onclick="navigateTo('process')">
                 ⚙️ 工序管理 <span class="sub">增删改工序 · 查看使用情况</span>
             </button>
@@ -526,7 +1351,7 @@
                 🧹 数据管理 <span class="sub">清空测试数据 · 保留工序</span>
             </button>
         </div>
-        <div class="footer">企业微信 · 车间追溯系统 v0.94</div>
+        <div class="footer">企业微信 · 车间追溯系统 v0.95</div>
     </div>
 
     <!-- ===== 员工登记 ===== -->
@@ -546,7 +1371,7 @@
             <div style="font-size:13px;color:#bfbfbf;margin-top:6px;">💡 微信内请手动输入物料码</div>
         </div>
         <div id="register-result"></div>
-               
+
         <div class="footer">员工登记 · 选择工序提交</div>
     </div>
 
@@ -579,7 +1404,9 @@
                 <button class="btn btn-export" onclick="exportProductCSV()">📤 导出产品</button>
             </div>
             <div id="stats-report-content">
-                <div class="card"><div class="empty-tip">👆 点击上方按钮查看统计或图表</div></div>
+                <div class="card">
+                    <div class="empty-tip">👆 点击上方按钮查看统计或图表</div>
+                </div>
             </div>
         </div>
         <div style="display:flex;gap:12px;margin-top:10px;">
@@ -626,13 +1453,16 @@
             <div class="process-selector" id="process-selector">
                 <div class="selected-list" id="selected-process-list"><span class="empty-hint">暂未选择工序，请添加</span></div>
                 <div class="add-row">
-                    <select id="process-select-dropdown"><option value="">-- 请选择工序 --</option></select>
+                    <select id="process-select-dropdown">
+                        <option value="">-- 请选择工序 --</option>
+                    </select>
                     <button class="btn btn-add" onclick="addProcess()">➕ 添加</button>
                 </div>
             </div>
             <div style="display:flex;gap:10px;margin-top:16px;">
                 <button class="btn btn-warning" onclick="previewBatch()" style="flex:1;">👀 预览</button>
-                <button class="btn btn-success" onclick="confirmBatch()" style="flex:1;" id="batch-confirm-btn">✅ 确认导入</button>
+                <button class="btn btn-success" onclick="confirmBatch()" style="flex:1;" id="batch-confirm-btn">✅
+                    确认导入</button>
             </div>
         </div>
         <div id="batch-result"></div>
@@ -651,7 +1481,8 @@
             </div>
             <div id="import-preview" class="import-preview"></div>
             <div style="display:flex;gap:10px;margin-top:12px;">
-                <button class="btn btn-success" onclick="confirmImport()" id="import-confirm-btn" disabled style="flex:1;">✅ 确认导入</button>
+                <button class="btn btn-success" onclick="confirmImport()" id="import-confirm-btn" disabled
+                    style="flex:1;">✅ 确认导入</button>
                 <button class="btn btn-danger" onclick="clearImportPreview()" style="flex:1;">🗑️ 清空预览</button>
             </div>
         </div>
@@ -664,13 +1495,16 @@
             </div>
             <div class="input-group">
                 <input type="text" id="qr-batch-input" placeholder="输入批次号，如 K-26070001">
-                <button class="btn btn-primary" onclick="generateQRCodes()" style="width:auto;padding:12px 16px;">生成</button>
+                <button class="btn btn-primary" onclick="generateQRCodes()"
+                    style="width:auto;padding:12px 16px;">生成</button>
             </div>
             <div style="display:flex;gap:10px;margin-top:8px;">
-                <button class="btn btn-success" onclick="exportQRCodeImage()" id="qr-export-btn" disabled style="flex:1;">📥 导出为图片</button>
+                <button class="btn btn-success" onclick="exportQRCodeImage()" id="qr-export-btn" disabled
+                    style="flex:1;">📥 导出为图片</button>
                 <button class="btn btn-danger" onclick="clearQRPreview()" style="flex:1;">🗑️ 清空</button>
             </div>
-            <div id="qr-preview" style="margin-top:12px;display:flex;flex-wrap:wrap;gap:8px;justify-content:center;max-height:400px;overflow-y:auto;background:#fafafa;padding:12px;border-radius:8px;border:1px solid #e8e8e8;min-height:60px;">
+            <div id="qr-preview"
+                style="margin-top:12px;display:flex;flex-wrap:wrap;gap:8px;justify-content:center;max-height:400px;overflow-y:auto;background:#fafafa;padding:12px;border-radius:8px;border:1px solid #e8e8e8;min-height:60px;">
                 <div class="empty-tip" style="width:100%;">输入批次号后点击「生成」</div>
             </div>
         </div>
@@ -694,7 +1528,8 @@
             </div>
             <div class="input-group" style="margin-bottom:12px;">
                 <input type="text" id="new-process-input" placeholder="输入新工序名称" value="">
-                <button class="btn btn-success" onclick="createProcess()" style="width:auto;padding:12px 16px;">➕ 添加</button>
+                <button class="btn btn-success" onclick="createProcess()" style="width:auto;padding:12px 16px;">➕
+                    添加</button>
             </div>
             <div id="process-list-container">
                 <div class="empty-tip">⏳ 加载中...</div>
@@ -719,2121 +1554,41 @@
             </div>
             <div class="data-clean-btn-group">
                 <button class="btn btn-danger" onclick="clearData('products')">🗑️ 清空产品数据（products）</button>
-                <button class="btn btn-danger" onclick="clearData('product_process_plan')">🗑️ 清空工序计划（product_process_plan）</button>
-                <button class="btn btn-danger" onclick="clearData('production_records')">🗑️ 清空生产记录（production_records）</button>
-                <button class="btn btn-danger" onclick="clearData('all')" style="background:#cf1322;">🔥 清空所有数据（全部）</button>
+                <button class="btn btn-danger" onclick="clearData('product_process_plan')">🗑️
+                    清空工序计划（product_process_plan）</button>
+                <button class="btn btn-danger" onclick="clearData('production_records')">🗑️
+                    清空生产记录（production_records）</button>
+                <button class="btn btn-danger" onclick="clearData('all')" style="background:#cf1322;">🔥
+                    清空所有数据（全部）</button>
             </div>
             <div id="data-result" style="margin-top:12px;"></div>
         </div>
         <div class="footer">数据管理 · 谨慎操作</div>
     </div>
 
+
+    <!-- ===== 第三方库（必须最先加载） ===== -->
     <script src="https://cdn.jsdelivr.net/npm/html5-qrcode@2.3.8/html5-qrcode.min.js">
     </script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js">
     </script>
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js">
     </script>
-    <script>
 
-        // ========================================
-        // 一、PWA & 安装功能
-        // ========================================
-
-        // ========================================
-        // 二、配置区
-        // ========================================
-
-        // ========================================
-        // 三、登录 & 用户管理
-        // ========================================
-
-        // ========================================
-        // 四、扫码功能
-        // ========================================
-
-        // ========================================
-        // 五、员工登记（含批量扫码）
-        // ========================================
-
-        // ========================================
-        // 六、查询统计（含图表）
-        // ========================================
-
-        // ========================================
-        // 七、不合格标记
-        // ========================================
-
-        // ========================================
-        // 八、批次管理
-        // ========================================
-
-        // ========================================
-        // 九、工序管理
-        // ========================================
-
-        // ========================================
-        // 十、数据管理
-        // ========================================
-
-        // ========================================
-        // 十一、向导系统
-        // ========================================
-
-
-
-        // ========================================
-        // 工具函数（放在最前面）
-        // ========================================
-        function showToast(msg, duration = 2000) {
-            const toast = document.getElementById('toast');
-            if (!toast) { alert(msg); return; }
-            toast.textContent = msg;
-            toast.classList.add('show');
-            clearTimeout(toast._timer);
-            toast._timer = setTimeout(() => toast.classList.remove('show'), duration);
-        }
-
-
-        // ===== PWA 新增：安装提示 =====
-        let deferredPrompt;
-
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            const installBtn = document.getElementById('install-btn');
-            if (installBtn) {
-                installBtn.style.display = 'inline-block';
-                installBtn.onclick = async () => {
-                    if (deferredPrompt) {
-                        deferredPrompt.prompt();
-                        const result = await deferredPrompt.userChoice;
-                        console.log('用户选择:', result.outcome);
-                        deferredPrompt = null;
-                        installBtn.style.display = 'none';
-                    }
-                };
-            }
-        });
-
-        window.addEventListener('appinstalled', () => {
-            document.getElementById('install-btn').style.display = 'none';
-            // 注意：这里的 showToast 会在后面定义，所以不会报错
-            setTimeout(() => {
-                if (typeof showToast === 'function') {
-                    showToast('✅ 应用已安装，可在桌面找到', 2000);
-                }
-            }, 500);
-        });
-
-        if (window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches) {
-            document.getElementById('install-btn').style.display = 'none';
-        }
-
-        function isIOS() {
-            return /iPad|iPhone|iPod/.test(navigator.userAgent);
-        }
-        if (isIOS() && !window.navigator.standalone) {
-            const installBtn = document.getElementById('install-btn');
-            if (installBtn) {
-                installBtn.style.display = 'inline-block';
-                installBtn.textContent = '📲 添加到主屏幕';
-                installBtn.onclick = () => {
-                    if (typeof showToast === 'function') {
-                        showToast('点击浏览器底部分享按钮 → 添加到主屏幕', 3000);
-                    } else {
-                        alert('点击浏览器底部分享按钮 → 添加到主屏幕');
-                    }
-                };
-            }
-        }
-
-
-
-        // ===================== 配置 =====================
-        const API_BASE = 'https://hajimio-d6g6tsg1e608005d5.service.tcloudbase.com';
-        const CORP_ID = 'wwde4aa70609aa1f0e';
-        const AGENT_ID = '1000002';
-        const REDIRECT_URI = encodeURIComponent('https://hajimio-d6g6tsg1e608005d5-1448886989.tcloudbaseapp.com/index.html');
-
-        let adminList = [];  // 新增：管理员列表将从服务器获取
-
-        let currentUser = null;
-        let selectedProcesses = [];
-        let allProcesses = [];
-        let workerStatsData = [];
-        let productStatsData = [];
-
-        // ===== 批量扫码登记 =====
-        let batchModeActive = false;
-        let batchTarget = null; // { product_id, process_id, step_order, name, batch_id }
-        let batchCount = 0;
-        let batchTotal = 0;
-        // ===== 二维码数据缓存 =====
-        let qrCodeData = [];
-
-
-        // 图表实例
-        let chartInstances = {};
-
-        // 批量导入数据
-        let importPreviewData = [];
-
-        // ===== 扫码相关 =====
-        let html5QrCode = null;
-        let scanTarget = null;
-
-        // ===== 缓存 key =====
-        const CACHE_KEY_REGISTER = 'cache_register_result';
-        const CACHE_KEY_STATS = 'cache_stats_result';
-        const CACHE_KEY_REGISTER_INPUT = 'cache_register_input';
-        const CACHE_KEY_STATS_INPUT = 'cache_stats_input';
-        const CACHE_KEY_USER = 'cache_last_user';
-
-        
-
-        // ===== 加载管理员列表（从云数据库） =====
-        async function loadAdminList() {
-        try {
-            const url = `${API_BASE}/getAdminList`;  // 注意确保路径正确
-            const response = await fetch(url);
-            const text = await response.text();
-            if (!response.ok) throw new Error(`HTTP ${response.status}`);
-            const data = JSON.parse(text);
-            if (data.success && Array.isArray(data.admins)) {
-            adminList = data.admins;
-            // 可选：缓存到 localStorage 以备离线使用
-            localStorage.setItem('cached_admin_list', JSON.stringify(adminList));
-            } else {
-            throw new Error(data.msg || '获取管理员列表失败');
-            }
-        } catch (err) {
-            console.error('加载管理员列表失败:', err);
-            // 降级：从 localStorage 读取缓存
-            const cached = localStorage.getItem('cached_admin_list');
-            if (cached) {
-            try {
-                adminList = JSON.parse(cached);
-                console.log('使用缓存的管理员列表');
-            } catch (e) {
-                adminList = [];
-            }
-            } else {
-            adminList = [];
-            }
-        }
-        }
-
-
-        // ===== 缓存 =====
-        function saveCache(key, data) { try { localStorage.setItem(key, JSON.stringify(data)); } catch (e) {} }
-
-        function loadCache(key) { try { const d = localStorage.getItem(key); return d ? JSON.parse(d) : null; } catch (e) { return null; } }
-
-
-
-        // ========================================
-        // 四、扫码功能
-        // ========================================
-        function startScanner(target) {
-            const ua = navigator.userAgent.toLowerCase();
-            // 检测微信或企业微信
-            if (ua.indexOf('micromessenger') !== -1 || ua.indexOf('wxwork') !== -1) {
-                const appName = ua.indexOf('wxwork') !== -1 ? '企业微信' : '微信';
-                showToast(
-                    `📱 ${appName}内无法使用摄像头扫码\n\n请点击右上角「...」→「在浏览器中打开」\n或复制链接到系统浏览器打开`,
-                    4000
-                );
-                return;
-            }
-            if (!target) return;
-            scanTarget = target;
-            const overlay = document.getElementById('scanner-overlay');
-            overlay.classList.add('active');
-            document.getElementById('scanner-status').textContent = '正在打开摄像头...';
-            const videoElement = document.getElementById('scanner-video');
-            if (html5QrCode) { try { html5QrCode.stop().then(() => html5QrCode.clear()); } catch (e) {} html5QrCode = null; }
-            videoElement.innerHTML = '';
-            html5QrCode = new Html5Qrcode("scanner-video");
-            const config = { fps: 10, qrbox: { width: 250, height: 250 }, aspectRatio: 1.0 };
-            html5QrCode.start({ facingMode: "environment" }, config, onScanSuccess, onScanError)
-                .then(() => { document.getElementById('scanner-status').textContent = '📷 扫描中...'; })
-                .catch((err) => {
-                    console.error('扫码启动失败:', err);
-                    document.getElementById('scanner-status').textContent = '❌ 摄像头启动失败: ' + err.message;
-                    showToast('摄像头启动失败，请检查权限', 3000);
-                });
-        }
-
-        async function onScanSuccess(decodedText, decodedResult) {
-            console.log('扫码结果:', decodedText);
-
-            document.getElementById('scanner-status').textContent = '✅ 扫码成功: ' + decodedText;
-            showToast('✅ 扫码成功', 1000);
-            let inputId = null,
-                queryFn = null;
-            if (scanTarget === 'register') { inputId = 'register-input';
-                queryFn = registerQuery; } else if (scanTarget === 'stats') { inputId = 'stats-input';
-                queryFn = statsQuery; } else if (scanTarget === 'defect') { inputId = 'defect-input';
-                queryFn = defectQuery; }
-            if (inputId) {
-                const input = document.getElementById(inputId);
-                if (input) { input.value = decodedText;
-                    saveCache(inputId === 'register-input' ? CACHE_KEY_REGISTER_INPUT : CACHE_KEY_STATS_INPUT, decodedText); }
-            }
-
-                // =========== 批量扫码模式检测 ============
-            if (batchModeActive && batchTarget && scanTarget === 'register') {
-                await batchRegister(decodedText);
-                // 批量模式下不关闭扫码，继续扫下一个
-                return;
-            }
-
-            closeScanner();
-            if (queryFn) { setTimeout(queryFn, 500); }
-        }
-
-
-
-        function onScanError(err) {}
-
-        function closeScanner() {
-            const overlay = document.getElementById('scanner-overlay');
-            overlay.classList.remove('active');
-            if (html5QrCode) { try { html5QrCode.stop().then(() => { html5QrCode.clear();
-                        html5QrCode = null; }).catch(() => {}); } catch (e) {} }
-            document.getElementById('scanner-status').textContent = '等待扫码...';
-            scanTarget = null;
-        }
-
-        // ===== 批量扫码登记 =====
-        function startBatchMode(productId, processId, stepOrder, processName, batchId) {
-            // 检查是否已经进入批量模式
-            if (batchModeActive) {
-                if (!confirm('当前已在批量模式，是否退出并重新开始？')) return;
-                exitBatchMode();
-            }
-            
-            batchModeActive = true;
-            batchTarget = {
-                product_id: productId,
-                process_id: processId,
-                step_order: stepOrder,
-                name: processName,
-                batch_id: batchId
-            };
-            batchCount = 0;
-            batchTotal = 0;
-            
-            // 查询该批次总数量
-            fetch(`${API_BASE}/getBatchCount?batch_id=${encodeURIComponent(batchId)}`)
-                .then(r => r.json())
-                .then(data => {
-                    if (data.success) {
-                        batchTotal = data.count || 0;
-                    }
-                })
-                .catch(() => {});
-            
-            showToast(`📦 进入批量模式：登记「${processName}」，请连续扫码`, 2500);
-            updateBatchModeUI();
-        }
-
-        function exitBatchMode() {
-            batchModeActive = false;
-            batchTarget = null;
-            batchCount = 0;
-            batchTotal = 0;
-            document.getElementById('batch-mode-bar').classList.add('hidden');
-            showToast('已退出批量模式', 1500);
-        }
-
-        function updateBatchModeUI() {
-            const bar = document.getElementById('batch-mode-bar');
-            if (!bar) return;
-            if (batchModeActive && batchTarget) {
-                bar.classList.remove('hidden');
-                document.getElementById('batch-mode-info').textContent = 
-                    `📦 批量登记「${batchTarget.name}」已登记 ${batchCount} 个${batchTotal > 0 ? ` / 共 ${batchTotal} 个` : ''}`;
-            } else {
-                bar.classList.add('hidden');
-            }
-        }
-
-        async function batchRegister(materialCode) {
-            if (!batchModeActive || !batchTarget) return false;
-            
-            // 先查询这个物料码对应的产品信息，获取 product_id
-            try {
-                const detail = await fetchProductDetail(materialCode);
-                if (!detail || !detail.product) {
-                    showToast('❌ 未找到该物料码对应的产品', 1500);
-                    return false;
-                }
-                
-                const product = detail.product;
-                // 检查批次号是否一致
-                if (product.batch_id !== batchTarget.batch_id) {
-                    showToast(`⚠️ 批次不一致！当前是「${product.batch_id}」，目标批次是「${batchTarget.batch_id}」`, 2500);
-                    return false;
-                }
-                
-                // 检查该工序是否已完成
-                const process = detail.processes.find(p => p.process_id === batchTarget.process_id);
-                if (process && process.worker) {
-                    showToast(`⏳ 该工序已被 ${process.worker} 登记过`, 1500);
-                    return false;
-                }
-                
-                // 执行登记
-                const worker = currentUser ? currentUser.name : '未知员工';
-                const record = {
-                    product_id: product._id,
-                    process_id: batchTarget.process_id,
-                    step_order: batchTarget.step_order,
-                    worker: worker,
-                    status: 'completed',
-                    timestamp: new Date().toISOString()
-                };
-                
-                const response = await fetch(`${API_BASE}/submitRecord`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(record)
-                });
-                const text = await response.text();
-                if (!response.ok) throw new Error(text);
-                const result = JSON.parse(text);
-                if (result.success) {
-                    batchCount++;
-                    updateBatchModeUI();
-                    showToast(`✅ 已登记 ${batchCount} 个「${batchTarget.name}」`, 1000);
-                    return true;
-                } else {
-                    throw new Error(result.msg || '登记失败');
-                }
-            } catch (err) {
-                console.error('批量登记异常:', err);
-                showToast('❌ ' + err.message, 2000);
-                return false;
-            }
-        }
-
-        // ===== 登录 =====
-        function loginAsTest() { loginWithName('测试员工'); }
-
-        function loginWechat() { showToast('企业微信授权功能暂未开放', 2500); }
-
-        function loginByName() {
-            const input = document.getElementById('name-input');
-            const name = input.value.trim();
-            if (!name) { showToast('请输入姓名', 1500); return; }
-            loginWithName(name);
-        }
-
-        function loginWithName(name) {
-            saveCache(CACHE_KEY_USER, name);
-            // 不再使用硬编码 ADMIN_LIST，改为调用 loadAdminList()
-            loadAdminList().then(() => {
-                const isAdmin = adminList.includes(name);
-                currentUser = { name, isAdmin };
-                sessionStorage.setItem('currentUser', JSON.stringify(currentUser));
-                document.getElementById('login-page').style.display = 'none';
-                updateUIForUser();
-                showToast(`👋 欢迎，${name}${isAdmin ? '（管理员）' : ''}`, 1500);
-                navigateTo('home');
-                restoreCachedResults();
-            }).catch(() => {
-                // fallback: 如果加载失败，暂时允许以非管理员身份进入
-                currentUser = { name, isAdmin: false };
-                sessionStorage.setItem('currentUser', JSON.stringify(currentUser));
-                document.getElementById('login-page').style.display = 'none';
-                updateUIForUser();
-                showToast(`👋 欢迎，${name}`, 1500);
-                navigateTo('home');
-                restoreCachedResults();
-            });
-        }
-
-        function logout() {
-            currentUser = null;
-            sessionStorage.removeItem('currentUser');
-            document.getElementById('login-page').style.display = 'flex';
-            closeSidebar();
-            showToast('已退出登录', 1500);
-        }
-
-        function checkLogin() {
-            const lastUser = loadCache(CACHE_KEY_USER);
-            if (lastUser) { document.getElementById('name-input').value = lastUser; }
-            const stored = sessionStorage.getItem('currentUser');
-            if (stored) {
-                try {
-                    currentUser = JSON.parse(stored);
-                    document.getElementById('login-page').style.display = 'none';
-                    updateUIForUser();
-                    restoreCachedResults();
-                    return true;
-                } catch (e) {}
-            }
-            document.getElementById('login-page').style.display = 'flex';
-            return false;
-        }
-
-        function restoreCachedResults() {
-            const registerData = loadCache(CACHE_KEY_REGISTER);
-            if (registerData && registerData.product && registerData.processes) {
-                renderProductDetail(registerData, 'register-result', { showRegister: true });
-            }
-            const statsData = loadCache(CACHE_KEY_STATS);
-            if (statsData && statsData.product && statsData.processes) {
-                renderProductDetail(statsData, 'stats-result', { showDefect: false });
-            }
-            const registerInput = loadCache(CACHE_KEY_REGISTER_INPUT);
-            if (registerInput) { document.getElementById('register-input').value = registerInput; }
-            const statsInput = loadCache(CACHE_KEY_STATS_INPUT);
-            if (statsInput) { document.getElementById('stats-input').value = statsInput; }
-        }
-
-        function updateUIForUser() {
-            if (!currentUser) return;
-            const { name, isAdmin } = currentUser;
-            document.getElementById('header-user').textContent = name;
-            document.getElementById('register-user').textContent = name;
-            document.getElementById('stats-user').textContent = name;
-            document.getElementById('defect-user').textContent = name;
-            document.getElementById('batch-user').textContent = name;
-            document.getElementById('process-user').textContent = name;
-            document.getElementById('data-user').textContent = name;
-            document.getElementById('sidebar-name').textContent = name;
-            document.getElementById('sidebar-role').textContent = isAdmin ? '管理员' : '普通员工';
-            document.getElementById('sidebar-avatar').textContent = name.charAt(0).toUpperCase();
-            const adminBtns = [
-                'home-stats-btn', 'home-defect-btn', 'home-batch-btn',
-                'home-process-btn', 'home-data-btn',
-                'menu-stats', 'menu-defect', 'menu-batch', 'menu-process', 'menu-data'
-            ];
-            adminBtns.forEach(id => {
-                const el = document.getElementById(id);
-                if (!el) return;
-                // 使用 currentUser.isAdmin 判断
-                if (isAdmin) {
-                el.classList.remove('disabled');
-                el.disabled = false;
-                if (id.startsWith('menu-')) el.style.display = 'flex';
-                } else {
-                el.classList.add('disabled');
-                el.disabled = true;
-                if (id.startsWith('menu-')) el.style.display = 'none';
-                // 如果当前页面是管理页面，跳转回主页
-                if (['page-stats', 'page-defect', 'page-batch', 'page-process', 'page-data'].some(p =>
-                    document.getElementById(p).classList.contains('active'))) {
-                    navigateTo('home');
-                }
-                }
-            });
-        }
-
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const overlay = document.getElementById('sidebar-overlay');
-            if (sidebar.classList.contains('active')) { closeSidebar(); } else { sidebar.classList.add('active');
-                overlay.classList.add('active'); }
-        }
-
-        function closeSidebar() {
-            document.getElementById('sidebar').classList.remove('active');
-            document.getElementById('sidebar-overlay').classList.remove('active');
-        }
-
-        function navigateTo(page) {
-            const adminPages = ['stats', 'defect', 'batch', 'process', 'data'];
-            if (adminPages.includes(page) && currentUser && !currentUser.isAdmin) {
-                showToast('您没有权限访问此功能', 2000);
-                return;
-            }
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            const target = document.getElementById('page-' + page);
-            if (target) target.classList.add('active');
-            document.querySelectorAll('#sidebar .menu-item').forEach(el => el.classList.remove('active'));
-            const menuItem = document.querySelector(`#sidebar .menu-item[data-page="${page}"]`);
-            if (menuItem) menuItem.classList.add('active');
-            closeSidebar();
-            if (page === 'register') document.getElementById('register-input').focus();
-            else if (page === 'stats') { document.getElementById('stats-input').focus();
-                toggleStatsTab('query'); } else if (page === 'defect') { document.getElementById('defect-input').focus(); } else if (
-                page === 'batch') { document.getElementById('batch-id-input').focus();
-                loadProcessList(); } else if (page === 'process') { loadProcessListForManage(); } else if (page === 'data') {
-                document.getElementById('data-result').innerHTML = ''; }
-
-            if (page !== 'home') {
-                window.history.pushState({ page: page }, '', window.location.href);
-            }
-        }
-
-        function toggleStatsTab(tab) {
-            const queryDiv = document.getElementById('stats-query');
-            const reportDiv = document.getElementById('stats-report');
-            const qBtn = document.getElementById('stats-tab-query');
-            const rBtn = document.getElementById('stats-tab-report');
-            if (tab === 'query') {
-                queryDiv.classList.remove('hidden');
-                reportDiv.classList.add('hidden');
-                qBtn.className = 'btn btn-primary';
-                rBtn.className = 'btn btn-outline';
-            } else {
-                queryDiv.classList.add('hidden');
-                reportDiv.classList.remove('hidden');
-                qBtn.className = 'btn btn-outline';
-                rBtn.className = 'btn btn-primary';
-                // 默认加载员工统计
-                document.getElementById('stats-tab-worker').className = 'btn btn-primary';
-                document.getElementById('stats-tab-product').className = 'btn btn-outline';
-                document.getElementById('stats-tab-chart').className = 'btn btn-chart';
-                loadWorkerStats();
-            }
-        }
-
-        // ===== 通用查询 =====
-        async function fetchProductDetail(productCode) {
-            if (!productCode || productCode.trim() === '') { showToast('请输入物料码'); return null; }
-            productCode = productCode.trim();
-            try {
-                const url = `${API_BASE}/getProductInfo?product_code=${encodeURIComponent(productCode)}`;
-                const response = await fetch(url);
-                const text = await response.text();
-                if (!response.ok) {
-                    let errMsg = `HTTP ${response.status}`;
-                    try { const errData = JSON.parse(text);
-                        errMsg = errData.msg || errMsg; } catch (_) { errMsg = text || errMsg; }
-                    throw new Error(errMsg);
-                }
-                const data = JSON.parse(text);
-                if (!data.success) throw new Error(data.msg || '查询失败');
-                return data;
-            } catch (err) {
-                console.error('查询异常:', err);
-                showToast('查询失败：' + err.message, 3000);
-                return null;
-            }
-        }
-
-        // ===== 渲染产品详情 =====
-        function renderProductDetail(data, containerId, options = {}) {
-            const container = document.getElementById(containerId);
-            if (!container) { console.warn('容器不存在:', containerId); return; }
-            const { product, processes } = data;
-            const { showRegister = false, showDefect = false } = options;
-            const statusMap = { 'pending': '待生产', 'processing': '生产中', 'done': '已完成' };
-            const statusText = statusMap[product.status] || product.status;
-            const statusClass = product.status === 'done' ? 'done' : (product.status === 'processing' ? 'processing' :
-                'pending');
-
-            let html = `
-                <div class="card">
-                    <div class="card-title">📦 产品信息</div>
-                    <div class="product-info">
-                        <p><span class="label">名称：</span>${product.product_name || '未命名'}</p>
-                        <p><span class="label">物料码：</span><strong>${product.material_code}</strong></p>
-                        <p><span class="label">批次号：</span>${product.batch_id || '-'}</p>
-                        <p><span class="label">序列号：</span>${product.serial_number || '-'}</p>
-                        <p><span class="label">状态：</span><span class="badge ${statusClass}">${statusText}</span></p>
-                    </div>
-                </div>
-            `;
-            if (processes && processes.length > 0) {
-                html += `<div class="card"><div class="card-title">📋 工序列表（共 ${processes.length} 步）</div>`;
-                processes.forEach((p, index) => {
-                    const stepName = p.name || '（未命名工序）';
-                    const isDone = p.worker && p.worker !== '' && p.worker !== null;
-                    const isFailed = p.quality_status === 'failed';
-                    let statusLabel = '⏳ 待完成';
-                    let statusClass = 'pending';
-                    if (isFailed) { statusLabel = '❌ 不合格';
-                        statusClass = 'failed'; } else if (isDone) { statusLabel = '✅ 已完成';
-                        statusClass = 'done'; }
-                    const workerInfo = isDone ? `👤 ${p.worker}` : '';
-                    html += `
-                        <div class="process-item">
-                            <span><span class="process-step">#${p.step_order || index+1}</span><span class="process-name">${stepName}</span></span>
-                            <span><span class="process-status ${statusClass}">${statusLabel}</span>${workerInfo ? `<span class="process-worker">${workerInfo}</span>` : ''}</span>
-                        </div>
-                    `;
-                    if (showDefect && isDone && !isFailed) {
-                        html +=
-                            `<div style="text-align:right;margin-top:-8px;margin-bottom:8px;"><button class="btn btn-danger btn-sm" onclick="markDefect('${product._id}','${p.process_id}',${p.step_order},'mark')">⚠️ 标记不合格</button></div>`;
-                    }
-                    if (showDefect && isFailed) {
-                        html +=
-                            `<div style="text-align:right;margin-top:-8px;margin-bottom:8px;"><button class="btn btn-success btn-sm" onclick="markDefect('${product._id}','${p.process_id}',${p.step_order},'unmark')">✅ 取消标记</button></div>`;
-                    }
-
-                                        // ===== 批量登记按钮（仅对已完成且非不合格的工序，且当前是员工登记模式） =====
-                    if (showRegister && isDone && !isFailed) {
-                        html += `
-                            <div style="text-align:right;margin-top:-8px;margin-bottom:8px;">
-                                <button class="btn btn-sm" onclick="startBatchMode('${product._id}','${p.process_id}',${p.step_order},'${p.name}','${product.batch_id}')" style="background:#722ed1;color:white;border:none;border-radius:4px;padding:4px 12px;font-size:13px;">
-                                    📦 批量登记
-                                </button>
-                            </div>
-                        `;
-                    }
-
-                });
-                html += `</div>`;
-                if (showRegister) {
-                    html += `<div class="card" style="background:#fafafa;"><div class="card-title">✍️ 登记工序</div><div style="margin-bottom:10px;font-size:14px;color:#8c8c8c;">选择你完成的工序：</div>`;
-                    let hasAvailable = false;
-                    processes.forEach((p, index) => {
-                        const isDone = p.worker && p.worker !== '' && p.worker !== null;
-                        if (!isDone) hasAvailable = true;
-                        const disabled = isDone ? 'disabled' : '';
-                        const checked = index === 0 && !isDone ? 'checked' : '';
-                        html += `
-                            <label style="display:block;padding:8px 0;font-size:16px;border-bottom:1px solid #f5f5f5;opacity:${isDone ? 0.5 : 1};">
-                                <input type="radio" name="register_process" value="${p.process_id}" data-step="${p.step_order}" data-product-id="${product._id}" ${disabled} ${checked}>
-                                #${p.step_order} ${p.name}
-                                ${isDone ? '（已完成，工人：' + p.worker + '）' : '（待完成）'}
-                            </label>
-                        `;
-                    });
-                    if (hasAvailable) {
-                        html +=
-                            `<button class="btn btn-success" onclick="submitRegistration()" style="margin-top:12px;">✅ 提交登记</button>
-                                <div style="font-size:13px;color:#bfbfbf;margin-top:6px;">选择一个工序后提交</div>`;
-                    } else {
-                        html += `<div style="padding:10px 0;color:#52c41a;text-align:center;">🎉 所有工序已完成！</div>`;
-                    }
-                    html += `</div>`;
-                }
-            } else {
-                html +=
-                    `<div class="card"><div class="card-title">📋 工序列表</div><div class="empty-tip">该产品暂无工序计划</div></div>`;
-            }
-            container.innerHTML = html;
-            if (containerId === 'register-result') { saveCache(CACHE_KEY_REGISTER, data); } else if (containerId ===
-                'stats-result') { saveCache(CACHE_KEY_STATS, data); }
-        }
-
-        // ===== 标记/取消不合格 =====
-        async function markDefect(productId, processId, stepOrder, action) {
-            const actionText = action === 'mark' ? '标记为不合格' : '取消不合格标记';
-            if (!confirm(`确定要${actionText}该工序吗？`)) return;
-            try {
-                showToast('⏳ 处理中...', 1000);
-                const response = await fetch(`${API_BASE}/markDefect`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ product_id: productId, process_id: processId, step_order: stepOrder,
-                        action })
-                });
-                const text = await response.text();
-                if (!response.ok) {
-                    let errMsg = `HTTP ${response.status}`;
-                    try { const errData = JSON.parse(text);
-                        errMsg = errData.msg || errMsg; } catch (_) { errMsg = text || errMsg; }
-                    throw new Error(errMsg);
-                }
-                const result = JSON.parse(text);
-                if (result.success) {
-                    showToast(`✅ ${result.msg}`, 2000);
-                    const input = document.getElementById('defect-input');
-                    const code = input.value.trim();
-                    if (code) {
-                        const data = await fetchProductDetail(code);
-                        if (data) renderProductDetail(data, 'defect-result', { showDefect: true });
-                    }
-                } else { throw new Error(result.msg || '操作失败'); }
-            } catch (err) {
-                console.error('标记异常:', err);
-                showToast('❌ 操作失败：' + err.message, 3000);
-            }
-        }
-
-        // ===== 员工登记 =====
-        async function registerQuery() {
-            const input = document.getElementById('register-input');
-            const code = input.value.trim();
-            if (!code) { showToast('请输入物料码'); return; }
-            saveCache(CACHE_KEY_REGISTER_INPUT, code);
-            const data = await fetchProductDetail(code);
-            if (data) renderProductDetail(data, 'register-result', { showRegister: true });
-        }
-
-        async function submitRegistration() {
-            const selected = document.querySelector('input[name="register_process"]:checked');
-            if (!selected) { showToast('请选择一个工序', 2000); return; }
-            const worker = currentUser ? currentUser.name : '未知员工';
-            const processId = selected.value;
-            const stepOrder = parseInt(selected.dataset.step);
-            const productId = selected.dataset.productId;
-            const record = {
-                product_id: productId,
-                process_id: processId,
-                step_order: stepOrder,
-                worker: worker,
-                status: 'completed',
-                timestamp: new Date().toISOString()
-            };
-            try {
-                showToast('⏳ 提交中...', 1000);
-                const response = await fetch(`${API_BASE}/submitRecord`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(record)
-                });
-                const text = await response.text();
-                if (!response.ok) {
-                    let errMsg = `HTTP ${response.status}`;
-                    try { const errData = JSON.parse(text);
-                        errMsg = errData.msg || errMsg; } catch (_) { errMsg = text || errMsg; }
-                    throw new Error(errMsg);
-                }
-                const result = JSON.parse(text);
-                if (result.success) {
-                    showToast('✅ 登记成功！', 2000);
-                    setTimeout(async () => {
-                        const input = document.getElementById('register-input');
-                        const code = input.value.trim();
-                        if (code) {
-                            const data = await fetchProductDetail(code);
-                            if (data) renderProductDetail(data, 'register-result', { showRegister: true });
-                        }
-                    }, 500);
-                } else { throw new Error(result.msg || '提交失败'); }
-            } catch (err) {
-                console.error('提交异常:', err);
-                showToast('❌ 登记失败：' + err.message, 3000);
-            }
-        }
-
-        // ===== 查询统计 =====
-        async function statsQuery() {
-            const input = document.getElementById('stats-input');
-            const code = input.value.trim();
-            if (!code) { showToast('请输入物料码'); return; }
-            saveCache(CACHE_KEY_STATS_INPUT, code);
-            const data = await fetchProductDetail(code);
-            if (data) renderProductDetail(data, 'stats-result', { showDefect: false });
-        }
-
-        // ===== 不合格标记 =====
-        async function defectQuery() {
-            const input = document.getElementById('defect-input');
-            const code = input.value.trim();
-            if (!code) { showToast('请输入物料码'); return; }
-            const data = await fetchProductDetail(code);
-            if (data) renderProductDetail(data, 'defect-result', { showDefect: true });
-        }
-
-        // ======== 批量扫码登记 ========
-        async function getBatchCount(batchId) {
-            try {
-                const response = await fetch(`${API_BASE}/getBatchCount?batch_id=${encodeURIComponent(batchId)}`);
-                const text = await response.text();
-                if (!response.ok) throw new Error(`HTTP ${response.status}`);
-                const data = JSON.parse(text);
-                return data.success ? data.count : 0;
-            } catch (err) {
-                console.error('获取批次总数失败:', err);
-                return 0;
-            }
-        }
-
-        function startBatchMode(productId, processId, stepOrder, processName, batchId) {
-            if (batchModeActive) {
-                if (!confirm('当前已在批量模式，是否退出并重新开始？')) return;
-                exitBatchMode();
-            }
-            batchModeActive = true;
-            batchTarget = {
-                product_id: productId,
-                process_id: processId,
-                step_order: stepOrder,
-                name: processName,
-                batch_id: batchId
-            };
-            batchCount = 0;
-            batchTotal = 0;
-            getBatchCount(batchId).then(count => { batchTotal = count; updateBatchModeUI(); });
-            showToast(`📦 进入批量模式：登记「${processName}」，请连续扫码`, 2500);
-            updateBatchModeUI();
-        }
-
-        function exitBatchMode() {
-            batchModeActive = false;
-            batchTarget = null;
-            batchCount = 0;
-            batchTotal = 0;
-            document.getElementById('batch-mode-bar').classList.add('hidden');
-            showToast('已退出批量模式', 1500);
-        }
-
-        function updateBatchModeUI() {
-            const bar = document.getElementById('batch-mode-bar');
-            if (!bar) return;
-            if (batchModeActive && batchTarget) {
-                bar.classList.remove('hidden');
-                document.getElementById('batch-mode-info').textContent = 
-                    `📦 批量登记「${batchTarget.name}」已登记 ${batchCount} 个${batchTotal > 0 ? ` / 共 ${batchTotal} 个` : ''}`;
-            } else {
-                bar.classList.add('hidden');
-            }
-        }
-
-
-
-        // ===== 批次管理 =====
-        async function loadProcessList() {
-            try {
-                const response = await fetch(`${API_BASE}/getProcessList`);
-                const text = await response.text();
-                if (!response.ok) throw new Error(`HTTP ${response.status}`);
-                const result = JSON.parse(text);
-                if (!result.success) throw new Error(result.msg || '获取工序列表失败');
-                allProcesses = result.processes || [];
-                const select = document.getElementById('process-select-dropdown');
-                select.innerHTML = '<option value="">-- 请选择工序 --</option>';
-                allProcesses.forEach(p => { const opt = document.createElement('option');
-                    opt.value = p.name;
-                    opt.textContent = p.name;
-                    select.appendChild(opt); });
-                updateSelectOptions();
-            } catch (err) {
-                console.error('加载工序列表失败:', err);
-                allProcesses = [
-                    { _id: 'proc_001', name: '下料' },
-                    { _id: 'proc_002', name: '铣削' },
-                    { _id: 'proc_003', name: '打磨' },
-                    { _id: 'proc_004', name: '焊接' },
-                    { _id: 'proc_005', name: '质检' }
-                ];
-                const select = document.getElementById('process-select-dropdown');
-                select.innerHTML = '<option value="">-- 请选择工序 --</option>';
-                allProcesses.forEach(p => { const opt = document.createElement('option');
-                    opt.value = p.name;
-                    opt.textContent = p.name;
-                    select.appendChild(opt); });
-                showToast('使用默认工序列表', 1500);
-            }
-        }
-
-        function updateSelectOptions() {
-            const select = document.getElementById('process-select-dropdown');
-            const options = select.querySelectorAll('option');
-            options.forEach(opt => { if (opt.value && selectedProcesses.includes(opt.value)) { opt.disabled = true; } else { opt
-                        .disabled = false; } });
-        }
-
-        function addProcess() {
-            const select = document.getElementById('process-select-dropdown');
-            const value = select.value;
-            if (!value) { showToast('请先选择一个工序', 1500); return; }
-            if (selectedProcesses.includes(value)) { showToast('该工序已添加', 1500); return; }
-            selectedProcesses.push(value);
-            renderSelectedProcesses();
-            updateSelectOptions();
-            select.value = '';
-            showToast(`✅ 已添加工序：${value}`, 1000);
-        }
-
-        function removeProcess(name) {
-            selectedProcesses = selectedProcesses.filter(p => p !== name);
-            renderSelectedProcesses();
-            updateSelectOptions();
-        }
-
-        function renderSelectedProcesses() {
-            const container = document.getElementById('selected-process-list');
-            if (selectedProcesses.length === 0) { container.innerHTML = '<span class="empty-hint">暂未选择工序，请添加</span>'; return; }
-            let html = '';
-            selectedProcesses.forEach(name => {
-                html +=
-                    `<span class="selected-tag">${name}<span class="del" onclick="removeProcess('${name}')">✕</span></span>`;
-            });
-            container.innerHTML = html;
-        }
-
-        // ===== 手动录入 - 预览 =====
-        async function previewBatch() {
-            const batchId = document.getElementById('batch-id-input').value.trim();
-            const productName = document.getElementById('batch-name-input').value.trim();
-            const count = parseInt(document.getElementById('batch-count-input').value.trim());
-            if (!batchId) { showToast('请输入批次号', 2000); return; }
-            if (!productName) { showToast('请输入产品名称', 2000); return; }
-            if (!count || count < 1) { showToast('请输入有效数量（≥1）', 2000); return; }
-            if (selectedProcesses.length === 0) { showToast('请至少添加一个工序', 2000); return; }
-            const container = document.getElementById('batch-result');
-            container.innerHTML = '<div class="card"><div class="empty-tip">⏳ 生成预览中...</div></div>';
-            const confirmBtn = document.getElementById('batch-confirm-btn');
-            if (confirmBtn) confirmBtn.disabled = true;
-            try {
-                const response = await fetch(`${API_BASE}/createBatch`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ batch_id: batchId, product_name: productName, process_names: selectedProcesses,
-                        count: count, preview: true })
-                });
-                const text = await response.text();
-                if (!response.ok) {
-                    let errMsg = `HTTP ${response.status}`;
-                    try { const errData = JSON.parse(text);
-                        errMsg = errData.msg || errMsg; } catch (_) { errMsg = text || errMsg; }
-                    throw new Error(errMsg);
-                }
-                const result = JSON.parse(text);
-                if (!result.success) throw new Error(result.msg || '预览失败');
-                let html = `
-                    <div class="card">
-                        <div class="card-title">👀 预览结果</div>
-                        <div class="preview-summary">
-                            <strong>批次号：</strong><span class="highlight">${result.batch_id}</span><br>
-                            <strong>产品名称：</strong>${result.product_name}<br>
-                            <strong>工序：</strong>${selectedProcesses.join(' → ')}<br>
-                            <strong>总数量：</strong>${result.total} 个<br>
-                            <strong>序列号范围：</strong>${result.start_serial} ~ ${result.end_serial}
-                `;
-                if (result.batch_exists) {
-                    html +=
-                        `<br><br><span style="color:#ff4d4f;font-weight:600;background:#fff1f0;padding:4px 12px;border-radius:4px;">⚠️ 批次号 "${result.batch_id}" 已存在（已有 ${result.existing_count} 个产品），请使用不同批次号</span>`;
-                    if (confirmBtn) confirmBtn.disabled = true;
-                } else { if (confirmBtn) confirmBtn.disabled = false; }
-                html += `
-                        </div>
-                        <table class="preview-table">
-                            <thead><tr><th>#</th><th>序列号</th><th>物料码</th></tr></thead>
-                            <tbody>
-                `;
-                result.preview.forEach((item, idx) => {
-                    const label = idx === result.preview.length - 1 && result.total > 3 ? '... 最后' : idx + 1;
-                    html += `<tr><td>${label}</td><td>${item.serial}</td><td><code>${item.material_code}</code></td></tr>`;
-                });
-                html += `</tbody></table>`;
-                if (result.batch_exists) {
-                    html += `<div style="margin-top:12px;font-size:13px;color:#ff4d4f;">❌ 该批次号已存在，无法继续导入</div>`;
-                } else {
-                    html += `<div style="margin-top:12px;font-size:13px;color:#52c41a;">✅ 批次号可用，点击「确认导入」写入数据库</div>`;
-                }
-                html += `</div>`;
-                container.innerHTML = html;
-                container.dataset.batchId = batchId;
-                container.dataset.productName = productName;
-                container.dataset.count = count;
-                container.dataset.processNames = JSON.stringify(selectedProcesses);
-                container.dataset.batchExists = result.batch_exists ? 'true' : 'false';
-            } catch (err) {
-                console.error('预览异常:', err);
-                container.innerHTML =
-                    `<div class="card" style="border-left:4px solid #ff4d4f;"><div style="color:#ff4d4f;">❌ ${err.message}</div></div>`;
-                if (confirmBtn) confirmBtn.disabled = true;
-            }
-        }
-
-        // ===== 手动录入 - 确认 =====
-        async function confirmBatch() {
-            const container = document.getElementById('batch-result');
-            const batchId = container.dataset.batchId;
-            const productName = container.dataset.productName;
-            const count = parseInt(container.dataset.count);
-            const processNames = JSON.parse(container.dataset.processNames || '[]');
-            const batchExists = container.dataset.batchExists === 'true';
-            if (!batchId || !productName || !count || processNames.length === 0) {
-                showToast('请先点击「预览」生成预览数据', 2000);
-                return;
-            }
-            if (batchExists) {
-                showToast(`❌ 批次号 "${batchId}" 已存在，请使用不同的批次号`, 3000);
-                return;
-            }
-            if (!confirm(`确认导入 ${count} 个「${productName}」到批次「${batchId}」？`)) return;
-            const confirmBtn = document.getElementById('batch-confirm-btn');
-            if (confirmBtn) confirmBtn.disabled = true;
-            container.innerHTML = '<div class="card"><div class="empty-tip">⏳ 导入中...</div></div>';
-            try {
-                const response = await fetch(`${API_BASE}/createBatch`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ batch_id: batchId, product_name: productName, process_names: processNames,
-                        count: count, preview: false })
-                });
-                const text = await response.text();
-                if (!response.ok) {
-                    let errMsg = `HTTP ${response.status}`;
-                    try { const errData = JSON.parse(text);
-                        errMsg = errData.msg || errMsg; } catch (_) { errMsg = text || errMsg; }
-                    throw new Error(errMsg);
-                }
-                const result = JSON.parse(text);
-                if (!result.success) throw new Error(result.msg || '导入失败');
-                container.innerHTML = `
-                    <div class="card" style="border-left:3px solid #52c41a;">
-                        <div style="color:#52c41a;font-weight:600;">✅ ${result.msg}</div>
-                        <div style="color:#8c8c8c;margin-top:6px;font-size:14px;">序列号范围：${result.start_serial} ~ ${result.end_serial}</div>
-                    </div>
-                `;
-                selectedProcesses = [];
-                renderSelectedProcesses();
-                updateSelectOptions();
-                document.getElementById('batch-name-input').value = '';
-                document.getElementById('batch-count-input').value = '';
-                showToast('✅ 批次导入成功！', 2000);
-            } catch (err) {
-                console.error('导入异常:', err);
-                container.innerHTML =
-                    `<div class="card" style="border-left:4px solid #ff4d4f;"><div style="color:#ff4d4f;">❌ ${err.message}</div></div>`;
-            } finally { if (confirmBtn) confirmBtn.disabled = false; }
-        }
-
-        // ===== 工序管理 =====
-        async function loadProcessListForManage() {
-            const container = document.getElementById('process-list-container');
-            container.innerHTML = '<div class="empty-tip">⏳ 加载中...</div>';
-            try {
-                const response = await fetch(`${API_BASE}/getProcessList`);
-                const text = await response.text();
-                if (!response.ok) throw new Error(`HTTP ${response.status}`);
-                const result = JSON.parse(text);
-                if (!result.success) throw new Error(result.msg || '获取工序列表失败');
-                const processes = result.processes || [];
-                document.getElementById('process-count').textContent = `共 ${processes.length} 个`;
-                if (processes.length === 0) {
-                    container.innerHTML = '<div class="empty-tip">暂无工序，请添加</div>';
-                    return;
-                }
-                let html = '';
-                processes.forEach(p => {
-                    html += `
-                        <div class="process-list-item" data-id="${p._id}">
-                            <span class="id-tag">${p._id}</span>
-                            <span class="name" id="name-${p._id}">${p.name}</span>
-                            <div class="actions">
-                                <button class="btn-sm btn-edit" onclick="startEditProcess('${p._id}','${p.name}')">✏️</button>
-                                <button class="btn-sm btn-delete" onclick="deleteProcess('${p._id}','${p.name}')">🗑️</button>
-                            </div>
-                        </div>
-                    `;
-                });
-                container.innerHTML = html;
-            } catch (err) {
-                console.error('加载工序列表失败:', err);
-                container.innerHTML = `<div class="empty-tip">❌ 加载失败：${err.message}</div>`;
-            }
-        }
-
-        function startEditProcess(id, currentName) {
-            const nameEl = document.getElementById('name-' + id);
-            const item = nameEl.closest('.process-list-item');
-            const actions = item.querySelector('.actions');
-            const currentHtml = nameEl.textContent;
-            nameEl.innerHTML = `
-                <input type="text" class="process-edit-input" id="edit-input-${id}" value="${currentName}" 
-                       onkeypress="if(event.key==='Enter'){saveEditProcess('${id}')}">
-            `;
-            actions.innerHTML = `
-                <button class="btn-sm btn-success" onclick="saveEditProcess('${id}')" style="background:#52c41a;color:white;border:none;border-radius:4px;padding:4px 12px;">💾</button>
-                <button class="btn-sm btn-outline" onclick="cancelEditProcess('${id}','${currentName}')" style="background:#f5f5f5;color:#333;border:1px solid #d9d9d9;border-radius:4px;padding:4px 12px;">✕</button>
-            `;
-            setTimeout(() => document.getElementById('edit-input-' + id).focus(), 100);
-        }
-
-        function cancelEditProcess(id, currentName) {
-            const nameEl = document.getElementById('name-' + id);
-            const item = nameEl.closest('.process-list-item');
-            const actions = item.querySelector('.actions');
-            nameEl.textContent = currentName;
-            actions.innerHTML = `
-                <button class="btn-sm btn-edit" onclick="startEditProcess('${id}','${currentName}')">✏️</button>
-                <button class="btn-sm btn-delete" onclick="deleteProcess('${id}','${currentName}')">🗑️</button>
-            `;
-        }
-
-        async function saveEditProcess(id) {
-            const input = document.getElementById('edit-input-' + id);
-            const newName = input.value.trim();
-            if (!newName) { showToast('工序名称不能为空', 1500); return; }
-            try {
-                const response = await fetch(`${API_BASE}/updateProcess`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ _id: id, name: newName })
-                });
-                const text = await response.text();
-                if (!response.ok) {
-                    let errMsg = `HTTP ${response.status}`;
-                    try { const errData = JSON.parse(text);
-                        errMsg = errData.msg || errMsg; } catch (_) { errMsg = text || errMsg; }
-                    throw new Error(errMsg);
-                }
-                const result = JSON.parse(text);
-                if (result.success) {
-                    showToast('✅ 工序已更新', 1500);
-                    loadProcessListForManage();
-                } else { throw new Error(result.msg || '更新失败'); }
-            } catch (err) {
-                console.error('更新工序异常:', err);
-                showToast('❌ 更新失败：' + err.message, 3000);
-            }
-        }
-
-        async function createProcess() {
-            const input = document.getElementById('new-process-input');
-            const name = input.value.trim();
-            if (!name) { showToast('请输入工序名称', 1500); return; }
-            try {
-                const response = await fetch(`${API_BASE}/createProcess`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ name: name })
-                });
-                const text = await response.text();
-                if (!response.ok) {
-                    let errMsg = `HTTP ${response.status}`;
-                    try { const errData = JSON.parse(text);
-                        errMsg = errData.msg || errMsg; } catch (_) { errMsg = text || errMsg; }
-                    throw new Error(errMsg);
-                }
-                const result = JSON.parse(text);
-                if (result.success) {
-                    showToast('✅ 工序创建成功', 1500);
-                    input.value = '';
-                    loadProcessListForManage();
-                    loadProcessList();
-                } else { throw new Error(result.msg || '创建失败'); }
-            } catch (err) {
-                console.error('创建工序异常:', err);
-                showToast('❌ 创建失败：' + err.message, 3000);
-            }
-        }
-
-        async function deleteProcess(id, name) {
-            if (!confirm(`确定要删除工序「${name}」吗？\n\n如果该工序被产品使用，将无法删除。`)) return;
-            try {
-                const response = await fetch(`${API_BASE}/deleteProcess`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ _id: id })
-                });
-                const text = await response.text();
-                if (!response.ok) {
-                    let errMsg = `HTTP ${response.status}`;
-                    try { const errData = JSON.parse(text);
-                        errMsg = errData.msg || errMsg; } catch (_) { errMsg = text || errMsg; }
-                    throw new Error(errMsg);
-                }
-                const result = JSON.parse(text);
-                if (result.success) {
-                    showToast('✅ 工序已删除', 1500);
-                    loadProcessListForManage();
-                    loadProcessList();
-                } else { throw new Error(result.msg || '删除失败'); }
-            } catch (err) {
-                console.error('删除工序异常:', err);
-                showToast('❌ ' + err.message, 3000);
-            }
-        }
-
-        // ===== 数据导出 =====
-        function exportWorkerCSV() {
-            if (!workerStatsData || workerStatsData.length === 0) {
-                showToast('请先加载员工统计数据', 2000);
-                return;
-            }
-            const headers = ['员工', '完成数', '合格', '不合格', '良品率'];
-            const rows = workerStatsData.map(item => [
-                item.worker,
-                item.total,
-                item.passed,
-                item.failed,
-                item.passRate + '%'
-            ]);
-            downloadCSV(headers, rows, '员工统计_车间追溯.csv');
-            showToast('📤 员工统计导出成功', 1500);
-        }
-
-        function exportProductCSV() {
-            if (!productStatsData || productStatsData.length === 0) {
-                showToast('请先加载产品统计数据', 2000);
-                return;
-            }
-            const headers = ['产品', '批次号', '已完成工序', '合格', '不合格', '良品率'];
-            const rows = productStatsData.filter(item => item.totalCompleted > 0).map(item => [
-                item.name || item.product_code,
-                item.batch_id || '-',
-                item.totalCompleted,
-                item.passed,
-                item.failed,
-                item.passRate + '%'
-            ]);
-            if (rows.length === 0) { showToast('暂无产品完成数据可导出', 2000); return; }
-            downloadCSV(headers, rows, '产品统计_车间追溯.csv');
-            showToast('📤 产品统计导出成功', 1500);
-        }
-
-        function downloadCSV(headers, rows, filename) {
-            const BOM = '\uFEFF';
-            let csv = BOM + headers.join(',') + '\n';
-            rows.forEach(row => {
-                csv += row.join(',') + '\n';
-            });
-            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
-            link.download = filename;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            URL.revokeObjectURL(link.href);
-        }
-
-        // ===== 批量导入 =====
-        function handleFileUpload(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                try {
-                    const data = new Uint8Array(e.target.result);
-                    const workbook = XLSX.read(data, { type: 'array' });
-                    const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
-                    const json = XLSX.utils.sheet_to_json(firstSheet);
-                    if (!json || json.length === 0) {
-                        showToast('文件为空或格式不正确', 2000);
-                        return;
-                    }
-                    // 解析数据
-                    const parsed = [];
-                    const errors = [];
-                    json.forEach((row, idx) => {
-                        const keys = Object.keys(row);
-                        // 尝试智能匹配列名
-                        let batch_id = row['批次号'] || row['batch_id'] || row['batchId'] || '';
-                        let product_name = row['产品名称'] || row['产品名'] || row['product_name'] || row['name'] ||
-                            '';
-                        let start_serial = row['起始序列号'] || row['start_serial'] || row['start'] || '';
-                        let end_serial = row['结束序列号'] || row['end_serial'] || row['end'] || '';
-                        let process_names = row['工序'] || row['process_names'] || row['工序列表'] || '';
-
-                        if (!batch_id && !product_name && !start_serial && !end_serial) {
-                            // 尝试用数字索引
-                            const vals = Object.values(row);
-                            if (vals.length >= 5) {
-                                batch_id = String(vals[0] || '');
-                                product_name = String(vals[1] || '');
-                                start_serial = String(vals[2] || '');
-                                end_serial = String(vals[3] || '');
-                                process_names = String(vals[4] || '');
-                            }
-                        }
-
-                        if (!batch_id || !product_name || !start_serial || !end_serial) {
-                            errors.push(`第 ${idx + 1} 行：缺少必要字段`);
-                            return;
-                        }
-                        // 处理工序列表（可能是逗号分隔的字符串）
-                        let processList = [];
-                        if (typeof process_names === 'string') {
-                            processList = process_names.split(/[,，、\s]+/).filter(p => p.trim());
-                        } else if (Array.isArray(process_names)) {
-                            processList = process_names.filter(p => p);
-                        } else {
-                            processList = [String(process_names)];
-                        }
-                        // 检查起始序列号是否有效
-                        const start = parseInt(start_serial);
-                        const end = parseInt(end_serial);
-                        if (isNaN(start) || isNaN(end) || start > end || start < 0) {
-                            errors.push(`第 ${idx + 1} 行：序列号范围无效（${start_serial} ~ ${end_serial}）`);
-                            return;
-                        }
-                        parsed.push({
-                            batch_id: String(batch_id).trim(),
-                            product_name: String(product_name).trim(),
-                            start_serial: start,
-                            end_serial: end,
-                            process_names: processList
-                        });
-                    });
-
-                    if (parsed.length === 0) {
-                        showToast('没有有效数据，请检查格式', 2000);
-                        return;
-                    }
-
-                    // 预览
-                    const previewContainer = document.getElementById('import-preview');
-                    previewContainer.innerHTML = `
-                        <div style="background:#e6f7ff;padding:8px 12px;border-radius:8px;margin-bottom:8px;font-size:14px;">
-                            ✅ 解析到 ${parsed.length} 批次，共 ${parsed.reduce((sum, p) => sum + (p.end_serial - p.start_serial + 1), 0)} 个产品
-                            ${errors.length > 0 ? `<br><span style="color:#ff4d4f;">⚠️ ${errors.length} 行数据有误，已跳过</span>` : ''}
-                        </div>
-                    `;
-
-                    let html = '';
-                    parsed.forEach((p, idx) => {
-                        const total = p.end_serial - p.start_serial + 1;
-                        html += `
-                            <div class="batch-item">
-                                <div class="meta">
-                                    <span><span class="label">批次号</span> <span class="value">${p.batch_id}</span></span>
-                                    <span><span class="label">产品</span> <span class="value">${p.product_name}</span></span>
-                                    <span><span class="label">序列号</span> <span class="value">${String(p.start_serial).padStart(3,'0')} ~ ${String(p.end_serial).padStart(3,'0')}</span></span>
-                                    <span><span class="label">数量</span> <span class="value">${total}</span></span>
-                                    <span><span class="label">工序</span> <span class="value">${p.process_names.join(' → ')}</span></span>
-                                </div>
-                                <div class="examples">示例物料码：${Array.from({length: Math.min(3, total)}, (_, i) => p.batch_id + '-' + String(p.start_serial + i).padStart(3,'0')).join(', ')}${total > 3 ? ' ...' : ''}</div>
-                            </div>
-                        `;
-                    });
-                    previewContainer.innerHTML += html;
-
-                    // 显示确认导入按钮
-                    document.getElementById('import-confirm-btn').disabled = false;
-                    document.getElementById('import-confirm-btn').textContent = `✅ 确认导入 ${parsed.length} 批次`;
-                    importPreviewData = parsed;
-
-                } catch (err) {
-                    console.error('文件解析失败:', err);
-                    showToast('文件解析失败：' + err.message, 3000);
-                }
-            };
-            reader.readAsArrayBuffer(file);
-            // 重置input，允许重复选择同一文件
-            event.target.value = '';
-        }
-
-        async function confirmImport() {
-            if (importPreviewData.length === 0) {
-                showToast('请先上传并预览数据', 2000);
-                return;
-            }
-            if (!confirm(`确认导入 ${importPreviewData.length} 批次（约 ${importPreviewData.reduce((sum, p) => sum + (p.end_serial - p.start_serial + 1), 0)} 个产品）？`)) return;
-
-            const btn = document.getElementById('import-confirm-btn');
-            btn.disabled = true;
-            btn.textContent = '⏳ 导入中...';
-
-            try {
-                const response = await fetch(`${API_BASE}/batchImportProducts`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ products: importPreviewData, preview: false })
-                });
-                const text = await response.text();
-                if (!response.ok) {
-                    let errMsg = `HTTP ${response.status}`;
-                    try { const errData = JSON.parse(text);
-                        errMsg = errData.msg || errMsg; } catch (_) { errMsg = text || errMsg; }
-                    throw new Error(errMsg);
-                }
-                const result = JSON.parse(text);
-                if (result.success) {
-                    showToast(`✅ ${result.msg}`, 3000);
-                    const previewContainer = document.getElementById('import-preview');
-                    previewContainer.innerHTML = `
-                        <div style="background:#f6ffed;padding:12px;border-radius:8px;border-left:3px solid #52c41a;">
-                            <div style="color:#52c41a;font-weight:600;">✅ ${result.msg}</div>
-                            <div style="color:#8c8c8c;font-size:13px;margin-top:4px;">共 ${result.totalProducts} 个产品，${result.totalPlans} 条工序计划</div>
-                        </div>
-                    `;
-                    importPreviewData = [];
-                    btn.textContent = '✅ 导入完成';
-                    btn.disabled = true;
-                } else { throw new Error(result.msg || '导入失败'); }
-            } catch (err) {
-                console.error('批量导入异常:', err);
-                showToast('❌ 导入失败：' + err.message, 3000);
-                btn.textContent = '✅ 确认导入';
-                btn.disabled = false;
-            }
-        }
-
-        function clearImportPreview() {
-            document.getElementById('import-preview').innerHTML = '';
-            document.getElementById('import-confirm-btn').disabled = true;
-            document.getElementById('import-confirm-btn').textContent = '✅ 确认导入';
-            importPreviewData = [];
-            document.getElementById('file-input').value = '';
-        }
-
-        
-                // =========== 二维码标签生成 ===========
-        function loadScript(src) {
-            return new Promise((resolve, reject) => {
-                const script = document.createElement('script');
-                script.src = src;
-                script.onload = resolve;
-                script.onerror = reject;
-                document.head.appendChild(script);
-            });
-        }
-
-        async function generateQRCodes() {
-            const input = document.getElementById('qr-batch-input');
-            const batchId = input.value.trim();
-            if (!batchId) { showToast('请输入批次号', 1500); return; }
-            const container = document.getElementById('qr-preview');
-            container.innerHTML = '<div class="empty-tip">⏳ 加载中...</div>';
-            document.getElementById('qr-export-btn').disabled = true;
-            qrCodeData = [];
-            try {
-                const response = await fetch(`${API_BASE}/getProductsByBatch?batch_id=${encodeURIComponent(batchId)}`);
-                const text = await response.text();
-                if (!response.ok) throw new Error(`HTTP ${response.status}`);
-                const result = JSON.parse(text);
-                if (!result.success) throw new Error(result.msg || '查询失败');
-                const products = result.data || [];
-                if (products.length === 0) { container.innerHTML = '<div class="empty-tip">该批次暂无产品</div>'; return; }
-                container.innerHTML = '';
-                if (typeof QRCode === 'undefined') {
-                    await loadScript('https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js');
-                }
-                products.forEach((prod, idx) => {
-                    const tag = document.createElement('div');
-                    tag.className = 'qr-tag';
-                    const qrDiv = document.createElement('div');
-                    qrDiv.id = `qr-${idx}`;
-                    tag.appendChild(qrDiv);
-                    const label = document.createElement('div');
-                    label.className = 'qr-label';
-                    label.textContent = prod.material_code || prod.product_code || '';
-                    tag.appendChild(label);
-                    container.appendChild(tag);
-                    new QRCode(qrDiv, {
-                        text: prod.material_code || prod.product_code || '',
-                        width: 80,
-                        height: 80,
-                        colorDark: '#000000',
-                        colorLight: '#ffffff',
-                        correctLevel: QRCode.CorrectLevel.H
-                    });
-                    qrCodeData.push(prod);
-                });
-                document.getElementById('qr-export-btn').disabled = false;
-                showToast(`✅ 已生成 ${products.length} 个二维码标签`, 2000);
-            } catch (err) {
-                console.error('生成二维码失败:', err);
-                container.innerHTML = `<div class="empty-tip">❌ ${err.message}</div>`;
-            }
-        }
-
-        function clearQRPreview() {
-            document.getElementById('qr-preview').innerHTML = '<div class="empty-tip">输入批次号后点击「生成」</div>';
-            document.getElementById('qr-export-btn').disabled = true;
-            qrCodeData = [];
-        }
-
-        function exportQRCodeImage() {
-            const container = document.getElementById('qr-preview');
-            const tags = container.querySelectorAll('.qr-tag');
-            if (tags.length === 0) { showToast('请先生成二维码', 1500); return; }
-            showToast('⏳ 正在生成图片...', 1500);
-            if (typeof html2canvas === 'undefined') {
-                loadScript('https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js')
-                    .then(() => doExportQRCode())
-                    .catch(() => showToast('❌ 加载绘图库失败', 2000));
-            } else {
-                doExportQRCode();
-            }
-        }
-
-        function doExportQRCode() {
-            const container = document.getElementById('qr-preview');
-            const tags = container.querySelectorAll('.qr-tag');
-            const total = tags.length;
-            const pageSize = 100;
-            const pages = Math.ceil(total / pageSize);
-            
-            if (pages > 1) {
-                // 分页导出
-                let currentPage = 0;
-                function exportPage() {
-                    const start = currentPage * pageSize;
-                    const end = Math.min(start + pageSize, total);
-                    // 创建一个临时容器只放当前页的标签
-                    const tempContainer = document.createElement('div');
-                    tempContainer.style.cssText = 'display:flex;flex-wrap:wrap;gap:8px;padding:12px;background:#fff;';
-                    for (let i = start; i < end; i++) {
-                        const clone = tags[i].cloneNode(true);
-                        tempContainer.appendChild(clone);
-                    }
-                    document.body.appendChild(tempContainer);
-                    html2canvas(tempContainer, {
-                        backgroundColor: '#ffffff',
-                        scale: 2,
-                        useCORS: true,
-                        logging: false
-                    }).then(canvas => {
-                        const link = document.createElement('a');
-                        link.download = `二维码标签_第${currentPage+1}页_${document.getElementById('qr-batch-input').value.trim() || 'batch'}.png`;
-                        link.href = canvas.toDataURL('image/png');
-                        link.click();
-                        document.body.removeChild(tempContainer);
-                        currentPage++;
-                        if (currentPage < pages) {
-                            setTimeout(exportPage, 500);
-                        } else {
-                            showToast(`✅ 已导出 ${pages} 页二维码标签`, 2000);
-                        }
-                    }).catch(err => {
-                        console.error('导出失败:', err);
-                        showToast('❌ 导出失败：' + err.message, 2000);
-                    });
-                }
-                exportPage();
-            } else {
-                // 少于100个，直接导出
-                html2canvas(container, {
-                    backgroundColor: '#ffffff',
-                    scale: 2,
-                    useCORS: true,
-                    logging: false
-                }).then(canvas => {
-                    const link = document.createElement('a');
-                    link.download = `二维码标签_${document.getElementById('qr-batch-input').value.trim() || 'batch'}.png`;
-                    link.href = canvas.toDataURL('image/png');
-                    link.click();
-                    showToast('✅ 二维码标签已导出', 1500);
-                }).catch(err => {
-                    console.error('导出失败:', err);
-                    showToast('❌ 导出失败：' + err.message, 2000);
-                });
-            }
-        }
-
-        // ===== 数据管理 - 清空 =====
-        async function clearData(target) {
-            const targetLabels = {
-                'products': '产品数据（products）',
-                'product_process_plan': '工序计划（product_process_plan）',
-                'production_records': '生产记录（production_records）',
-                'all': '所有数据（全部）'
-            };
-            const label = targetLabels[target] || target;
-            if (!confirm(`⚠️ 确定要清空「${label}」吗？\n\n此操作不可恢复！\n工序列表（processes）不会被删除。`)) return;
-            const resultDiv = document.getElementById('data-result');
-            resultDiv.innerHTML = '<div style="color:#faad14;">⏳ 正在清空...</div>';
-            try {
-                const response = await fetch(`${API_BASE}/clearData`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ confirm: 'YES_DELETE', target: target })
-                });
-                const text = await response.text();
-                if (!response.ok) {
-                    let errMsg = `HTTP ${response.status}`;
-                    try { const errData = JSON.parse(text);
-                        errMsg = errData.msg || errMsg; } catch (_) { errMsg = text || errMsg; }
-                    throw new Error(errMsg);
-                }
-                const result = JSON.parse(text);
-                if (result.success) {
-                    resultDiv.innerHTML = `
-                        <div style="background:#f6ffed;padding:12px;border-radius:8px;border-left:3px solid #52c41a;">
-                            <div style="color:#52c41a;font-weight:600;">✅ ${result.msg}</div>
-                            <div style="color:#8c8c8c;font-size:13px;margin-top:4px;">已删除记录数：${JSON.stringify(result.results)}</div>
-                        </div>
-                    `;
-                    localStorage.removeItem(CACHE_KEY_REGISTER);
-                    localStorage.removeItem(CACHE_KEY_STATS);
-                    document.getElementById('register-result').innerHTML = '';
-                    document.getElementById('stats-result').innerHTML = '';
-                    showToast('✅ 数据已清空', 2000);
-                } else { throw new Error(result.msg || '清空失败'); }
-            } catch (err) {
-                console.error('清空数据异常:', err);
-                resultDiv.innerHTML =
-                    `<div style="background:#fff1f0;padding:12px;border-radius:8px;border-left:3px solid #ff4d4f;color:#ff4d4f;">❌ ${err.message}</div>`;
-            }
-        }
-
-        // ===== 统计功能 =====
-        async function fetchStats(type) {
-            try {
-                const url = `${API_BASE}/getStats?type=${type}`;
-                const response = await fetch(url);
-                const text = await response.text();
-                if (!response.ok) throw new Error(`HTTP ${response.status}`);
-                const data = JSON.parse(text);
-                if (!data.success) throw new Error(data.msg || '获取统计失败');
-                return data.data;
-            } catch (err) {
-                console.error(`${type} 统计异常:`, err);
-                showToast(`${type === 'worker' ? '员工' : '产品'}统计失败：` + err.message, 3000);
-                return [];
-            }
-        }
-
-
-        // ========================================
-        // 六、查询统计（含图表）
-        // ========================================
-        async function loadWorkerStats() {
-            const container = document.getElementById('stats-report-content');
-            container.innerHTML = '<div class="card"><div class="empty-tip">⏳ 加载中...</div></div>';
-            document.getElementById('stats-tab-worker').className = 'btn btn-primary';
-            document.getElementById('stats-tab-product').className = 'btn btn-outline';
-            document.getElementById('stats-tab-chart').className = 'btn btn-chart';
-            const data = await fetchStats('worker');
-            workerStatsData = data;
-            if (data.length === 0) {
-                container.innerHTML = `<div class="card"><div class="empty-tip">暂无员工完成数据</div></div>`;
-                return;
-            }
-            let html = `
-                <div class="card">
-                    <div class="card-title">👷 员工完成量统计（共 ${data.length} 人）</div>
-                    <table style="width:100%;font-size:14px;border-collapse:collapse;">
-                        <thead><tr style="background:#f5f5f5;text-align:left;">
-                            <th style="padding:8px 4px;">员工</th>
-                            <th style="padding:8px 4px;text-align:center;">完成数</th>
-                            <th style="padding:8px 4px;text-align:center;">合格</th>
-                            <th style="padding:8px 4px;text-align:center;">不合格</th>
-                            <th style="padding:8px 4px;text-align:center;">良品率</th>
-                        </tr></thead>
-                        <tbody>
-            `;
-            data.forEach(item => {
-                const rate = item.passRate || 0;
-                const rateClass = rate >= 80 ? 'rate-high' : 'rate-low';
-                html += `
-                    <tr style="border-bottom:1px solid #f0f0f0;">
-                        <td style="padding:10px 4px;font-weight:500;">${item.worker}</td>
-                        <td style="padding:10px 4px;text-align:center;">${item.total}</td>
-                        <td style="padding:10px 4px;text-align:center;color:#52c41a;">${item.passed}</td>
-                        <td style="padding:10px 4px;text-align:center;color:#ff4d4f;">${item.failed}</td>
-                        <td style="padding:10px 4px;text-align:center;"><span class="${rateClass}">${rate}%</span></td>
-                    </tr>
-                `;
-            });
-            html += `</tbody></table></div>`;
-            container.innerHTML = html;
-            showToast('✅ 员工统计加载完成', 1500);
-        }
-
-        async function loadProductStats() {
-            const container = document.getElementById('stats-report-content');
-            container.innerHTML = '<div class="card"><div class="empty-tip">⏳ 加载中...</div></div>';
-            document.getElementById('stats-tab-product').className = 'btn btn-primary';
-            document.getElementById('stats-tab-worker').className = 'btn btn-outline';
-            document.getElementById('stats-tab-chart').className = 'btn btn-chart';
-            const data = await fetchStats('product');
-            productStatsData = data;
-            const filtered = data.filter(item => item.totalCompleted > 0);
-            if (filtered.length === 0) {
-                container.innerHTML = `<div class="card"><div class="empty-tip">暂无产品完成数据</div></div>`;
-                return;
-            }
-            let html = `
-                <div class="card">
-                    <div class="card-title">📦 产品完成统计（共 ${filtered.length} 个产品有记录）</div>
-                    <table style="width:100%;font-size:14px;border-collapse:collapse;">
-                        <thead><tr style="background:#f5f5f5;text-align:left;">
-                            <th style="padding:8px 4px;">产品</th>
-                            <th style="padding:8px 4px;text-align:center;">已完成工序</th>
-                            <th style="padding:8px 4px;text-align:center;">合格</th>
-                            <th style="padding:8px 4px;text-align:center;">不合格</th>
-                            <th style="padding:8px 4px;text-align:center;">良品率</th>
-                        </tr></thead>
-                        <tbody>
-            `;
-            filtered.forEach(item => {
-                const rate = item.passRate || 0;
-                const rateClass = rate >= 80 ? 'rate-high' : 'rate-low';
-                const displayName = item.display || `${item.name} (${item.batch_id})`;
-                html += `
-                    <tr style="border-bottom:1px solid #f0f0f0;">
-                        <td style="padding:10px 4px;font-weight:500;">${displayName}</td>
-                        <td style="padding:10px 4px;text-align:center;">${item.totalCompleted}</td>
-                        <td style="padding:10px 4px;text-align:center;color:#52c41a;">${item.passed}</td>
-                        <td style="padding:10px 4px;text-align:center;color:#ff4d4f;">${item.failed}</td>
-                        <td style="padding:10px 4px;text-align:center;"><span class="${rateClass}">${rate}%</span></td>
-                    </tr>
-                `;
-            });
-            html += `</tbody></table></div>`;
-            container.innerHTML = html;
-            showToast('✅ 产品统计加载完成', 1500);
-        }
-
-        // ===== 图表统计 =====
-        async function loadChartStats() {
-            const container = document.getElementById('stats-report-content');
-            container.innerHTML = '<div class="card"><div class="empty-tip">⏳ 加载图表数据...</div></div>';
-            document.getElementById('stats-tab-chart').className = 'btn btn-chart active';
-            document.getElementById('stats-tab-worker').className = 'btn btn-outline';
-            document.getElementById('stats-tab-product').className = 'btn btn-outline';
-
-            // 并行获取数据
-            const [workerData, productData] = await Promise.all([
-                fetchStats('worker'),
-                fetchStats('product')
-            ]);
-            workerStatsData = workerData;
-            productStatsData = productData;
-
-            // 准备图表数据
-            const workerNames = workerData.map(item => item.worker);
-            const workerTotals = workerData.map(item => item.total);
-            const workerPassRates = workerData.map(item => item.passRate || 0);
-
-            const productFiltered = productData.filter(item => item.totalCompleted > 0);
-            const productNames = productFiltered.map(item => item.name || item.product_code);
-            const productTotals = productFiltered.map(item => item.totalCompleted);
-            const productPassRates = productFiltered.map(item => item.passRate || 0);
-
-            let html = `
-                <div class="card">
-                    <div class="card-title">📈 图表统计</div>
-            `;
-
-            if (workerData.length === 0 && productFiltered.length === 0) {
-                html += `<div class="empty-tip">暂无数据可展示图表</div>`;
-                html += `</div>`;
-                container.innerHTML = html;
-                return;
-            }
-
-            // 员工完成量柱状图
-            if (workerData.length > 0) {
-                html += `
-                    <div class="chart-box">
-                        <div class="chart-title">👷 员工完成量排行</div>
-                        <div class="chart-container" style="height:${Math.max(200, workerData.length * 30)}px;">
-                            <canvas id="chart-worker-total"></canvas>
-                        </div>
-                    </div>
-                `;
-            }
-
-            // 员工良品率柱状图
-            if (workerData.length > 0) {
-                html += `
-                    <div class="chart-box">
-                        <div class="chart-title">📊 员工良品率</div>
-                        <div class="chart-container" style="height:${Math.max(200, workerData.length * 30)}px;">
-                            <canvas id="chart-worker-rate"></canvas>
-                        </div>
-                    </div>
-                `;
-            }
-
-            // 产品完成量柱状图（取前20）
-            if (productFiltered.length > 0) {
-                const topProducts = productFiltered.slice(0, 20);
-                html += `
-                    <div class="chart-box">
-                        <div class="chart-title">📦 产品完成量排行（前20）</div>
-                        <div class="chart-container" style="height:${Math.max(200, topProducts.length * 28)}px;">
-                            <canvas id="chart-product-total"></canvas>
-                        </div>
-                    </div>
-                `;
-            }
-
-            html += `</div>`;
-            container.innerHTML = html;
-
-            // 渲染图表（使用 setTimeout 确保 DOM 已渲染）
-            requestAnimationFrame(() => {
-                // 销毁旧图表
-                Object.keys(chartInstances).forEach(key => {
-                    if (chartInstances[key]) {
-                        chartInstances[key].destroy();
-                        delete chartInstances[key];
-                    }
-                });
-
-                const colors = ['#1890ff', '#52c41a', '#faad14', '#ff4d4f', '#722ed1', '#13c2c2', '#eb2f96', '#fa541c'];
-
-                // 员工完成量
-                if (workerData.length > 0) {
-                    const ctx1 = document.getElementById('chart-worker-total');
-                    if (ctx1) {
-                        chartInstances['workerTotal'] = new Chart(ctx1, {
-                            type: 'bar',
-                            data: {
-                                labels: workerNames,
-                                datasets: [{
-                                    label: '完成数量',
-                                    data: workerTotals,
-                                    backgroundColor: workerTotals.map((v, i) => colors[i % colors
-                                        .length]),
-                                    borderRadius: 4
-                                }]
-                            },
-                            options: {
-                                responsive: true,
-                                maintainAspectRatio: false,
-                                plugins: {
-                                    legend: { display: false }
-                                },
-                                scales: {
-                                    y: { beginAtZero: true, ticks: { stepSize: 1 } }
-                                }
-                            }
-                        });
-                    }
-                }
-
-                // 员工良品率
-                if (workerData.length > 0) {
-                    const ctx2 = document.getElementById('chart-worker-rate');
-                    if (ctx2) {
-                        chartInstances['workerRate'] = new Chart(ctx2, {
-                            type: 'bar',
-                            data: {
-                                labels: workerNames,
-                                datasets: [{
-                                    label: '良品率 (%)',
-                                    data: workerPassRates,
-                                    backgroundColor: workerPassRates.map(v => v >= 80 ?
-                                        'rgba(82,196,26,0.8)' : v >= 60 ?
-                                        'rgba(250,173,20,0.8)' :
-                                        'rgba(255,77,79,0.8)'),
-                                    borderRadius: 4
-                                }]
-                            },
-                            options: {
-                                responsive: true,
-                                maintainAspectRatio: false,
-                                plugins: {
-                                    legend: { display: false }
-                                },
-                                scales: {
-                                    y: { beginAtZero: true, max: 100, ticks: { callback: v => v + '%' } }
-                                }
-                            }
-                        });
-                    }
-                }
-
-                // 产品完成量
-                if (productFiltered.length > 0) {
-                    const topProducts = productFiltered.slice(0, 20);
-                    const ctx3 = document.getElementById('chart-product-total');
-                    if (ctx3) {
-                        chartInstances['productTotal'] = new Chart(ctx3, {
-                            type: 'bar',
-                            data: {
-                                labels: topProducts.map(item => item.name || item.product_code),
-                                datasets: [{
-                                    label: '已完成工序',
-                                    data: topProducts.map(item => item.totalCompleted),
-                                    backgroundColor: topProducts.map((v, i) => colors[i % colors
-                                        .length]),
-                                    borderRadius: 4
-                                }]
-                            },
-                            options: {
-                                responsive: true,
-                                maintainAspectRatio: false,
-                                plugins: {
-                                    legend: { display: false }
-                                },
-                                scales: {
-                                    y: { beginAtZero: true, ticks: { stepSize: 1 } }
-                                }
-                            }
-                        });
-                    }
-                }
-            }, 100);
-        }
-
-        // ===== 数据管理 - 清空 =====
-        // (已在上方定义)
-
-        // ===== 初始化 =====
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('app_v0.94 加载成功（批量导入+统计图表）');
-
-            // ===== 返回键回到主界面：初始化历史状态 =====
-            window.history.pushState({ page: 'home' }, '', window.location.href);
-
-
-            if (!checkLogin()) { document.getElementById('login-page').style.display = 'flex'; } else { navigateTo('home'); }
-            loadProcessList();
-
-            document.getElementById('register-input').addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') { e.preventDefault();
-                    registerQuery(); }
-            });
-            document.getElementById('stats-input').addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') { e.preventDefault();
-                    statsQuery(); }
-            });
-            document.getElementById('defect-input').addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') { e.preventDefault();
-                    defectQuery(); }
-            });
-            document.getElementById('name-input').addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') { e.preventDefault();
-                    loginByName(); }
-            });
-            document.getElementById('batch-id-input').addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') { e.preventDefault();
-                    document.getElementById('batch-name-input').focus(); }
-            });
-            document.getElementById('batch-name-input').addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') { e.preventDefault();
-                    document.getElementById('batch-count-input').focus(); }
-            });
-            document.getElementById('batch-count-input').addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') { e.preventDefault();
-                    document.getElementById('process-select-dropdown').focus(); }
-            });
-            document.getElementById('process-select-dropdown').addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') { e.preventDefault();
-                    addProcess(); }
-            });
-            document.getElementById('new-process-input').addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') { e.preventDefault();
-                    createProcess(); }
-            });
-
-            //wizardPrev 定义,放在popstate 监听器之前
-            function wizardPrev() {
-                if (wizardState.currentStep > 0) {
-                    wizardState.currentStep--;
-                    renderWizardContent();
-                }
-            }
-
-                // ===== 返回键回到主界面：拦截返回键 =====
-            window.addEventListener('popstate', function(event) {
-                const activePage = document.querySelector('.page.active');
-
-                // 如果向导打开，返回上一步
-                if (wizardState.active) {
-                    wizardPrev();
-                    return;
-                }
-
-                if (!activePage) return;
-                // 如果当前不是主页，跳转到主页
-                if (activePage.id !== 'page-home') {
-                    navigateTo('home');
-                    // 重新推入状态，防止连续返回时跳出
-                    window.history.pushState({ page: 'home' }, '', window.location.href);
-                } else {
-                    // 已经在主页，再按一次退出
-                    if (window.exitTimer) {
-                        clearTimeout(window.exitTimer);
-                        window.exitTimer = null;
-                        // 允许退出
-                        window.history.back();
-                    } else {
-                        showToast('再按一次退出应用', 1500);
-                        window.exitTimer = setTimeout(() => {
-                            window.exitTimer = null;
-                        }, 2000);
-                        // 阻止这次返回
-                        window.history.pushState({ page: 'home' }, '', window.location.href);
-                    }
-                }
-            });
-        });
-
-        // ===== 向导系统 =====
-        const WIZARD_PRESETS = {
-            worker: {
-                name: '🧑‍🏭 员工登记预设',
-                desc: '适合一线工人：扫码查产品 → 登记工序 → 批量快速登记',
-                steps: [
-                    { title: '扫码或输入物料码', desc: '在「员工登记」页面，扫描产品二维码或手动输入物料码', action: '点击「📷 扫码」或输入后点击「查询」', target: 'register-input' },
-                    { title: '查看产品信息', desc: '确认产品名称、批次号、工序列表是否正确', action: '查看产品信息卡片，确认无误', target: 'register-result' },
-                    { title: '选择工序并登记', desc: '在工序列表中，选择你完成的工序，点击「提交登记」', action: '点击工序旁的「提交登记」按钮', target: 'register-result' },
-                    { title: '批量登记（可选）', desc: '如果同一批次多个产品要做同一工序，点击「批量登记」后连续扫码', action: '点击「📦 批量登记」→ 连续扫码', target: 'register-result' }
-                ]
-            },
-            manager: {
-                name: '👨‍💼 管理者预设',
-                desc: '适合管理员：录入批次 → 生成二维码 → 查看统计',
-                steps: [
-                    { title: '录入新批次', desc: '在「批次管理」页面，输入批次号、产品名称、数量和工序', action: '填写信息后点击「预览」→「确认导入」', target: 'batch-id-input' },
-                    { title: '生成二维码标签', desc: '同一页面下方，输入批次号生成所有产品的二维码', action: '输入批次号 → 点击「生成」→ 导出为图片', target: 'qr-batch-input' },
-                    { title: '等待员工登记', desc: '工人完成工序后，数据会自动记录到系统', action: '切换到「查询统计」查看进度', target: 'stats-tab-report' },
-                    { title: '不合格标记（如需）', desc: '在「不合格标记」页面，对不合格工序进行标记', action: '输入物料码 → 选择工序 → 标记不合格', target: 'defect-input' },
-                    { title: '查看统计报表', desc: '在「查询统计」页面查看员工完成量和产品完成度', action: '点击「员工统计」或「产品统计」查看数据', target: 'stats-tab-worker' }
-                ]
-            }
-        };
-
-        let wizardState = { active: false, preset: 'worker', currentStep: 0, steps: [] };
-
-        function openWizard() {
-            const choice = confirm('选择预设方案：\n点击「确定」= 员工登记预设\n点击「取消」= 管理者预设');
-            wizardState.preset = choice ? 'worker' : 'manager';
-            wizardState.steps = WIZARD_PRESETS[wizardState.preset].steps;
-            wizardState.currentStep = 0;
-            wizardState.active = true;
-            const overlay = document.getElementById('wizard-overlay');
-            if (overlay) overlay.classList.add('active');
-            renderWizardContent();
-        }
-
-        function renderWizardContent() {
-            const { steps, currentStep, preset } = wizardState;
-            const total = steps.length;
-            const step = steps[currentStep];
-            const presetData = WIZARD_PRESETS[preset];
-
-            document.getElementById('wizard-title').textContent = `${presetData.name} · 第 ${currentStep+1}/${total} 步`;
-            document.getElementById('wizard-desc').textContent = step.desc;
-            document.getElementById('wizard-action').innerHTML = `
-                <div style="font-weight:500;margin-bottom:4px;">📌 操作指引</div>
-                <div>${step.action}</div>
-                <div style="font-size:12px;color:#bfbfbf;margin-top:4px;">📍 位置：${step.target}</div>
-            `;
-
-            const dots = document.getElementById('wizard-dots');
-            dots.innerHTML = '';
-            for (let i = 0; i < total; i++) {
-                const dot = document.createElement('span');
-                dot.className = 'step-dot';
-                if (i < currentStep) dot.classList.add('done');
-                if (i === currentStep) dot.classList.add('active');
-                dots.appendChild(dot);
-            }
-
-            document.getElementById('wizard-prev-btn').style.display = currentStep === 0 ? 'none' : 'block';
-            document.getElementById('wizard-next-btn').textContent = currentStep === total - 1 ? '✅ 完成' : '下一步 →';
-        }
-
-        function wizardNext() {
-            const { steps, currentStep } = wizardState;
-            if (currentStep < steps.length - 1) {
-                wizardState.currentStep++;
-                const step = steps[wizardState.currentStep];
-                const pageMap = {
-                    'register-input': 'register', 'register-result': 'register',
-                    'batch-id-input': 'batch', 'qr-batch-input': 'batch',
-                    'stats-tab-report': 'stats', 'stats-tab-worker': 'stats',
-                    'defect-input': 'defect'
-                };
-                const targetPage = pageMap[step.target] || 'home';
-                navigateTo(targetPage);
-                renderWizardContent();
-            } else {
-                closeWizard();
-                showToast('🎉 向导已完成！', 2000);
-            }
-        }
-
-        function closeWizard() {
-            wizardState.active = false;
-            const overlay = document.getElementById('wizard-overlay');
-            if (overlay) overlay.classList.remove('active');
-        }
-
-        // 修改 popstate 支持向导返回
-        // 找到原来的 popstate 监听器，在它里面加入向导检测
-        // 因为原来的 popstate 在 DOMContentLoaded 里，我们需要修改它
-        // 最简单：在原有的 popstate 监听器里，在开头加入：
-        // if (wizardState.active) { wizardPrev(); return; }
-        // 你可以在 DOMContentLoaded 中找到 window.addEventListener('popstate', ...) 部分，在最前面插入这两行。
-
-    </script>
+    <!-- ===== 模块文件（顺序严格按这个来，不能乱） ===== -->
+    <script src="js/utils.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/render.js"></script>
+    <script src="js/auth-nav.js"></script>
+    <script src="js/scanner.js"></script>
+    <script src="js/register.js"></script>
+    <script src="js/stats.js"></script>
+    <script src="js/defect.js"></script>
+    <script src="js/batch.js"></script>
+    <script src="js/process.js"></script>
+    <script src="js/data.js"></script>
+    <script src="js/wizard.js"></script>
+    <script src="js/app.js"></script>
 
 
     <!-- ===== 向导弹出层 ===== -->
@@ -2844,12 +1599,15 @@
             <div class="step-desc" id="wizard-desc"></div>
             <div class="step-action" id="wizard-action"></div>
             <div class="btn-group">
-                <button class="btn btn-outline" onclick="wizardPrev()" id="wizard-prev-btn" style="display:none;">← 上一步</button>
+                <button class="btn btn-outline" onclick="wizardPrev()" id="wizard-prev-btn" style="display:none;">←
+                    上一步</button>
                 <button class="btn btn-primary" onclick="wizardNext()" id="wizard-next-btn">下一步 →</button>
             </div>
             <button class="btn-wizard-skip" onclick="closeWizard()">退出向导</button>
         </div>
     </div>
 
+
 </body>
+
 </html>
